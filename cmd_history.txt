@@ -1,9 +1,0 @@
-
-apt install libtbb-dev libjemalloc-dev libfftw3.3 libopenjp2-7 libpng16-16 libjpeg-turbo8 libtiff5
-
-cp /opt/lib/osd-3.4.0_RC2/lib/* /usr/lib/x86_64-linux-gnu/
-cp /opt/lib/osl-1.10.9/lib/* /usr/lib/x86_64-linux-gnu/
-cp /opt/lib/oiio-1.8.13/lib/* /usr/lib/x86_64-linux-gnu/
-cp /opt/lib/openexr-2.4.0/lib/* /usr/lib/x86_64-linux-gnu/
-
-cp /usr/lib/x86_64-linux-gnu/libpython3.7m.so.1.0 /usr/lib/x86_64-linux-gnu/
