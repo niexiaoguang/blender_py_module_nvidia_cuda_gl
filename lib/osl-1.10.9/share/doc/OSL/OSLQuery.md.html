@@ -1,0 +1,425 @@
+<meta charset="utf-8">
+
+                 **OSLQuery Documentation**
+
+
+Introduction and Tutorial
+=========================
+
+`OSLQuery` is a class that lets an application interrogate a
+compiled shader for information about its parameters.
+
+The shader may be an already-compiled shader file on disk (i.e. a
+`.oso` file), or the `.oso` equivalent in a string, or the binary
+representation used by the OSL `ShaderSystem` runtime (as a pointer
+to a `ShaderGroup`).  For example,
+
+~~~
+    OSLQuery oslquery ("polished_oak");
+~~~
+
+It's then easy to retrieve a specific parameter:
+
+~~~
+    int nparams = oslquery.nparams();  // number of params
+
+    const OSLQuery::Parameter *param;
+    p = oslquery.getparam (i);            // by index (0..nparams-1)
+    p = oslquery.getparam ("woodcolor");  // by name
+~~~
+
+And the `Parameter` structure will hold all the information you need
+about that paramter. For example:
+
+~~~
+    std::cout << "Parameter " << p->name
+              << " is type " << p->type << "\n"
+~~~
+
+You can find out if the parameter is a closure, an output parameter,
+etc. You can also find out its default values, which are stored in
+vector fields `idefault`, `fdefault`, and `sdefault` depending on
+whether the types is based on int, float, or string, respectively.
+
+
+OSLQuery class API Reference
+============================
+
+Parameter helper structure
+--------------------------
+`Parameter` holds all the information about a single shader
+parameter.
+
+<script type="preformatted">
+~~~C
+struct OSLQUERYPUBLIC Parameter {
+    ustring name;                    //< name
+    TypeDesc type;                   //< data type
+    bool isoutput = false;           //< is it an output param?
+    bool validdefault = false;       //< false if there's no default val
+    bool varlenarray = false;        //< is it a varying-length array?
+    bool isstruct = false;           //< is it a structure?
+    bool isclosure = false;          //< is it a closure?
+    void *data = nullptr;            //< pointer to data
+    std::vector<int> idefault;       //< default int values
+    std::vector<float> fdefault;     //< default float values
+    std::vector<ustring> sdefault;   //< default string values
+    std::vector<ustring> spacename;  //< space name for matrices and
+                                     //<  triples, for each array elem.
+    std::vector<ustring> fields;     //< Names of this struct's fields
+    ustring structname;              //< Name of the struct
+    std::vector<Parameter> metadata; //< Meta-data about the param
+
+    Parameter () {}
+    Parameter (const Parameter& src);
+    Parameter (Parameter&& src);
+    const Parameter& operator= (const Parameter &);
+    const Parameter& operator= (Parameter &&);
+};
+~~~
+</script>
+
+OSLQuery methods
+----------------
+
+~~~C
+OSLQuery ()
+~~~
+Construct an uninitialized OSLQuery. It will not hold any
+information about a shader until `open()` is called.
+
+~~~C
+OSLQuery (string_view shadername,
+          string_view searchpath = string_view()) 
+~~~
+Construct an OSLQuery and open a compiled shader from a disk file.
+The `shadername` may be either the name of the `.oso` file, or the
+name of the shader. The optional `searchpath` paramter gives a
+colon-separated list of directories to search for compiled shaders.
+
+~~~C
+OSLQuery (const ShaderGroup *group, int layernum) 
+~~~
+Construct an OSLQuery and initialize it with an existing
+`ShaderGroup` (which must have been built using the `ShadingSystem`
+runtime API for OSL.
+
+~~~C
+~OSLQuery ()
+~~~
+Clean up and destruct the `OSLQuery`.
+
+~~~C
+bool open (string_view shadername,
+           string_view searchpath = string_view())
+~~~
+For an uninitialized `OSLQuery` object, initialize it with info on
+the named shader with optional searcphath.  Return true for success,
+false if the shader could not be found or opened properly.
+
+~~~C
+bool open_bytecode (string_view buffer)
+~~~
+Get info on the shader from it's compiled bytecode (i.e., like the
+contents of an `.oso` file, but in a string).  Return `true` for
+success, false if the shader could not be found or opened properly.
+
+This is meant to be called from an app which caches bytecodes from
+it's own side and wants to get shader info on runtime without
+creating a temporary file.
+
+~~~C
+bool init (const ShaderGroup *group, int layernum)
+~~~
+Meant to be called at runtime from an app with a full ShadingSystem,
+fill out an OSLQuery structure for the given layer of the group.
+This is much faster than using open() to read it from an oso file on
+disk.
+
+~~~C
+const ustring shadertype (void) const 
+~~~
+Return the shader type: "surface", "displacement", "volume",
+"light", or "shader" (for generic shaders).
+
+~~~C
+const ustring shadername (void) const 
+~~~
+Get the name of the shader.
+
+~~~C
+size_t nparams (void) const 
+~~~
+How many parameters does the shader have
+
+~~~C
+const Parameter *getparam (size_t i) const
+const Parameter *getparam (const std::string &name) const
+const Parameter *getparam (ustring name) const
+~~~
+Retrieve a parameter, either by index or by name. Return nullptr if
+the index is out of range, or if the named parameter is not found.
+
+~~~C
+const std::vector<Parameter> &metadata (void) const 
+~~~
+Retrieve a reference to the metadata about the shader.
+
+~~~C
+std::string geterror (bool clear_error = true) 
+~~~
+Return error string, empty if there was no error, and reset the
+error string.
+
+
+Example program using OSLQuery
+==============================
+
+This is the full text of `oslinfo`, a command-line utility that
+for any shader, will print out its parameters (name, type, default
+values, and metadata).
+
+~~~~
+<script type="preformatted">
+#include <iostream>
+#include <string>
+#include <cstring>
+
+#include <OpenImageIO/strutil.h>
+#include <OpenImageIO/argparse.h>
+#include <OpenImageIO/timer.h>
+#include <OpenImageIO/filesystem.h>
+
+#include <OSL/oslquery.h>
+using namespace OSL;
+
+
+static std::string searchpath;
+static bool verbose = false;
+static bool help = false;
+static bool runstats = false;
+static std::string oneparam;
+
+
+
+// Print the default values for a paarameter built out of integers.
+static void
+print_default_string_vals (const OSLQuery::Parameter *p, bool verbose)
+{
+    size_t ne;
+    if (p->varlenarray || p->type.arraylen < 0)
+        ne = p->sdefault.size();
+    else
+        ne = p->type.numelements();
+    if (verbose) {
+        for (size_t a = 0;  a < ne;  ++a)
+            std::cout << "\t\tDefault value: \""
+                      << OIIO::Strutil::escape_chars(p->sdefault[a]) << "\"\n";
+    } else {
+        for (size_t a = 0;  a < ne;  ++a)
+            std::cout << "\"" << OIIO::Strutil::escape_chars(p->sdefault[a])
+                      << "\" ";
+        std::cout << "\n";
+    }
+}
+
+
+
+// Print the default values for a paarameter built out of floats (including
+// color, point, etc., or arrays thereof).
+static void
+print_default_int_vals (const OSLQuery::Parameter *p, bool verbose)
+{
+    size_t nf = p->type.aggregate;
+    size_t ne;
+    if (p->varlenarray || p->type.arraylen < 0)
+        ne = p->idefault.size() / nf;
+    else
+        ne = p->type.numelements();
+    if (verbose)
+        std::cout << "\t\tDefault value:";
+    if (p->type.arraylen || nf > 1)
+        std::cout << " [";
+    for (size_t a = 0;  a < ne;  ++a) {
+        for (size_t f = 0;  f < nf; ++f)
+            std::cout << ' ' << p->idefault[a*nf+f];
+    }
+    if (p->type.arraylen || nf > 1)
+        std::cout << " ]";
+    std::cout << std::endl;
+}
+
+
+
+// Print the default values for a paarameter built out of strings.
+static void
+print_default_float_vals (const OSLQuery::Parameter *p, bool verbose)
+{
+    size_t nf = p->type.aggregate;
+    size_t ne;
+    if (p->varlenarray || p->type.arraylen < 0)
+        ne = p->fdefault.size() / nf;
+    else
+        ne = p->type.numelements();
+    if (verbose)
+        std::cout << "\t\tDefault value:";
+    if (p->type.arraylen || nf > 1)
+        std::cout << " [";
+    for (size_t a = 0;  a < ne;  ++a) {
+        if (verbose && p->spacename.size() > a && ! p->spacename[a].empty())
+            std::cout << " \"" << p->spacename[a] << "\"";
+        for (size_t f = 0;  f < nf; ++f)
+            std::cout << ' ' << p->fdefault[a*nf+f];
+    }
+    if (p->type.arraylen || nf > 1)
+        std::cout << " ]";
+    std::cout << std::endl;
+}
+
+
+
+// Print all the metadata for a parameter.
+static void
+print_metadata (const OSLQuery::Parameter &m)
+{
+    std::string typestring (m.type.c_str());
+    std::cout << "\t\tmetadata: " << typestring << ' ' << m.name << " =";
+    for (unsigned int d = 0;  d < m.idefault.size();  ++d)
+        std::cout << " " << m.idefault[d];
+    for (unsigned int d = 0;  d < m.fdefault.size();  ++d)
+        std::cout << " " << m.fdefault[d];
+    for (unsigned int d = 0;  d < m.sdefault.size();  ++d)
+        std::cout << " \"" << OIIO::Strutil::escape_chars(m.sdefault[d]) << "\"";
+    std::cout << std::endl;
+}
+
+
+
+static void
+oslinfo (const std::string &name)
+{
+    OIIO::Timer t (runstats ? OIIO::Timer::StartNow : OIIO::Timer::DontStartNow);
+    OSLQuery g;
+    g.open (name, searchpath);
+    std::string e = g.geterror();
+    if (! e.empty()) {
+        std::cout << "ERROR opening shader \"" << name << "\" (" << e << ")\n";
+        return;
+    }
+    if (runstats) {
+        // display timings in an easy to sort form
+        std::cout << t.stop() << " sec for " << name << "\n";
+        return; // don't show anything else, we are just benchmarking
+    }
+
+    if (oneparam.empty()) {
+        std::cout << g.shadertype() << " \"" << g.shadername() << "\"\n";
+        if (verbose) {
+            for (unsigned int m = 0;  m < g.metadata().size();  ++m)
+                print_metadata (g.metadata()[m]);
+        }
+    }
+
+    for (size_t i = 0;  i < g.nparams();  ++i) {
+        const OSLQuery::Parameter *p = g.getparam (i);
+        if (!p)
+            break;
+        if (oneparam.size() && oneparam != p->name)
+            continue;
+        std::string typestring;
+        if (p->isstruct)
+            typestring = "struct " + p->structname.string();
+        else
+            typestring = p->type.c_str();
+        if (verbose) {
+            std::cout << "    \"" << p->name << "\" \""
+                      << (p->isoutput ? "output " : "") << typestring << "\"\n";
+        } else {
+            std::cout << (p->isoutput ? "output " : "") << typestring << ' ' 
+                      << p->name << ' ';
+        }
+        if (p->isstruct) {
+            if (verbose)
+                std::cout << "\t\t";
+            std::cout << "fields: {";
+            for (size_t f = 0;  f < p->fields.size();  ++f) {
+                if (f)
+                    std::cout << ", ";
+                std::string fieldname = p->name.string() + '.' + p->fields[f].string();
+                const OSLQuery::Parameter *field = g.getparam (fieldname);
+                if (field)
+                    std::cout << field->type.c_str() << ' ' << p->fields[f];
+                else
+                    std::cout << "UNKNOWN";
+            }
+            std::cout << "}\n";
+        }
+        else if (! p->validdefault) {
+            if (verbose)
+                 std::cout << "\t\tUnknown default value\n";
+            else std::cout << "nodefault\n";
+        }
+        else if (p->type.basetype == TypeDesc::STRING)
+            print_default_string_vals (p, verbose);
+        else if (p->type.basetype == TypeDesc::INT)
+            print_default_int_vals (p, verbose);
+        else
+            print_default_float_vals (p, verbose);
+        if (verbose) {
+            for (unsigned int i = 0;  i < p->metadata.size();  ++i)
+                print_metadata (p->metadata[i]);
+        }
+    }
+}
+
+
+
+static int
+input_file (int argc, const char *argv[])
+{
+    for (int i = 0;  i < argc;  i++) {
+        oslinfo (argv[i]);
+    }
+    return 0;
+}
+
+
+
+int
+main (int argc, char *argv[])
+{
+    // Globally force classic "C" locale, and turn off all formatting
+    // internationalization, for the entire oslinfo application.
+    std::locale::global (std::locale::classic());
+
+    OIIO::Filesystem::convert_native_arguments (argc, (const char **)argv);
+
+    OIIO::ArgParse ap (argc, (const char **)argv);
+    ap.options ("oslinfo -- list parameters of a compiled OSL shader\n"
+                OSL_INTRO_STRING "\n"
+                "Usage:  oslinfo [options] file0 [file1 ...]\n",
+                "%*", input_file, "",
+                "-h", &help, "Print help message",
+                "--help", &help, "",
+                "-v", &verbose, "Verbose",
+                "--runstats", &runstats, "Benchmark shader loading time for queries",
+                "-p %s", &searchpath, "Set searchpath for shaders",
+                "--param %s", &oneparam, "Output information in just this parameter",
+                NULL);
+
+    if (ap.parse (argc, (const char **)argv) < 0) {
+        std::cerr << ap.geterror() << std::endl;
+        ap.usage ();
+    } else if (help || argc <= 1) {
+        ap.usage ();
+    }
+    return EXIT_SUCCESS;
+}
+
+</script>
+~~~~
+
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+<link rel="stylesheet" href="docs.css">

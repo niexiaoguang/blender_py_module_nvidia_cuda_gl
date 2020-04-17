@@ -1,0 +1,201 @@
+<meta charset="utf-8">
+
+
+                      **docdeep**
+
+Introduction
+============
+
+`docdeep` is a utility that extracts documentation from source code and
+turns them into beautiful Markdeep documents.
+
+[Markdeep](https://casual-effects.com/markdeep) is a package by Morgan
+McGuire, an extension of Markdown with a whole bunch of nice features
+that make it extra nice for code, math, and diagrams. Read the Markdeep
+web page and look at the examples for details.
+
+`docdeep` is a little like `Doxygen`. A poor person's Doxygen. A very
+poor person. But without Doxygen's awkward syntax -- you just write
+the comments in Markdeep. And the output is very aesthetically pleasing.
+But it doesn't have any bells and whistles, like cross-referencing.
+
+
+
+Markup controls
+===============
+
+## Documentation lines.
+
+A line whose first three non-whitespace characters are either `///` or
+`###` is called a *doc-line*. Any other line is a *non-doc-line*.
+
+The `///` or `###` is the *doc-symbol*. Generally speaking, the `///`
+doc-symbol is used when doc-marking C or C++, and `###` when doc-marking
+Python, shell scripts, or other programs in languages where `#` is the
+comment character. For simplicity, in the rest of this document, we will
+always use `///` in our examples.
+
+## Doc regions
+
+Doc-lines by themeslves don't do much, unless they are within a
+*doc-region*. The beginning of a doc-region is denoted by a doc-line
+whose first characters after the doc-symbol is
+
+
+<script type="preformatted">
+~~~C
+/// <doc region-name>
+~~~
+</script>
+
+
+A doc region is ended one of three ways:
+
+1. `&lt;/doc>` ends the active region.
+2. `&lt;doc newname>` setting a new region name.
+3. The end of the source file.
+
+When there is an active named region, any other doc lines will be
+appended (after stripping off the doc symbol itself) to the current
+doc region text.
+
+You can have multiple regions with the same name, in entirely separate
+parts of your source code. They will just be concatenated.
+
+Only one main doc region will be output by the `docdeep` program,
+specified with the `-d` command line argument. Any other doc-regions
+will not be included in the documention output of that run.
+
+However, one doc-region may *include* the text of another doc-region
+as follows:
+
+
+<script type="preformatted">
+~~~C
+/// <inc region-name>
+~~~
+</script>
+
+
+## Doc continuations and code regions
+
+If three dots follow the `doc` directive, like this:
+
+
+<script type="preformatted">
+~~~C
+/// <doc... region-name>
+~~~
+</script>
+
+
+This causes *all* lines (until the end of the doc region) to be
+interpreted as Markdeep documentation, even it if doesn't start with
+the doc-symbol.
+
+Furthermore, denoting any region thusly:
+
+<script type="preformatted">
+~~~C
+/// <code>
+...
+/// </code>
+~~~
+</script>
+
+
+will designate the contents not only as a doc continuation, but also
+to be formatted as source code (mono space, syntax highlighted).
+
+## API Explanations
+
+There is a special syntax for a common case: call-by-call explanations
+of API methods and their explanations. Of course, this may constitute
+the bulk of your auto-generated documentation. The two cases we are
+concerned about is *pre-code comments* and *post-code comments*.
+
+For pre-code comments, the contiguous comment region associated with
+a declaration immediately precedes the declaration. Such a comment
+set has its first line start with `///>`.  For post-code comments,
+the documentaiton comments follows the code declaration, and this is
+designated by having its first line start with `///<`.  I like to
+just remember that the `<` or `>` points in the direction of the code
+declaration that the comment applies to.
+
+This is perhaps best explained by example:
+
+
+<script type="preformatted">
+~~~C
+///> Do the foo operation. Everybody knows what this is. You can write
+/// any comment you want, with full markdeep formatting! It applies
+/// to the declaration that will immediately follow this comment.
+float foo (float x, float y);
+
+void bar (int n);
+///< The bar procedure. Note that with post-comments, you explain the
+/// function or method *after* the declaration itself.
+~~~
+</script>
+
+
+This will generate the following output:
+
+
+<script type="preformatted">
+~~~C
+float foo (float x, float y);
+~~~
+</script>
+
+Do the foo operation. Everybody knows what this is. You can write
+any comment you want, with full markdeep formatting! It applies
+to the declaration that will immediately follow this comment.
+
+
+<script type="preformatted">
+~~~C
+void bar (int n);
+~~~
+</script>
+
+The bar procedure. Note that with post-comments, you explain the
+function or method *after* the declaration itself.
+
+-----------------------
+
+It is important to keep in mind that **this API explanation is extremely
+stupid**. The comment documentation is just a series of doc-lines with
+no break between them, whose *first* line starts with `///>' or `///>`
+(for pre-code and post-code docs, respectively). And the code that it
+documents is just the immediately preceding or following set of non-doc
+lines that contain *no* whitespace-only lines. There is no syntax
+parsing going on here -- it just takes those non-blank, non-doc lines,
+strips off any semicolons and any characters following the semicolon
+from each line in the block, and deletes anything in the whole block
+at or after the first opening brace (`{`) found in the block. Strangely
+enough, this is almost exactly what I want to document.
+
+
+Command line arguments
+======================
+
+Run from the command line as follows:
+
+`$ python docdeep.py -d` *region* `-s` *style.css* `input1.h input2.cpp [...] > output.md.html`
+
+Arguments:
+
+`-d` *region*
+:  Specifies the name of the doc-region to generate output for. This is
+   required.
+`-s` *stylesheet*
+:  This optional argument will specify which CSS style sheet to include a
+   reference to.
+
+Any number of filenames may be specified. They will be processed in the
+order that they appear on the command line.
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+<link rel="stylesheet" href="docs.css">

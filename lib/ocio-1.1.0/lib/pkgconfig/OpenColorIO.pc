@@ -1,0 +1,10 @@
+prefix=/opt/lib/ocio-1.1.0
+exec_prefix=/opt/lib/ocio-1.1.0
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib
+
+Name: OpenColorIO
+Description: A color management framework for visual effects and animation
+Version: 1.1.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lOpenColorIO
