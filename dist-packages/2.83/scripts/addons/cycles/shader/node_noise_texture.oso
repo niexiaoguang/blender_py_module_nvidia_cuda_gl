@@ -1,0 +1,3385 @@
+OpenShadingLanguage 1.00
+# Compiled by oslc 1.10.9
+# options: -q -O2 -I/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders -IOSL_SHADER_DIR-NOTFOUND -o /mnt/hd/dev/blender/build_linux_bpy/intern/cycles/kernel/shaders/node_noise_texture.oso
+shader node_noise_texture
+param	int	use_mapping	0		%read{1,1} %write{2147483647,-1}
+param	matrix	mapping	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0		%read{2,2} %write{2147483647,-1}
+param	string	dimensions	"3D"		%read{5,879} %write{2147483647,-1}
+param	point	Vector	0 0 0		%read{0,0} %write{2147483647,-1}
+param	float	W	0		%read{4,4} %write{2147483647,-1}
+param	float	Scale	5		%read{3,4} %write{2147483647,-1}
+param	float	Detail	2		%read{30,1230} %write{2147483647,-1}
+param	float	Distortion	0		%read{9,999} %write{2147483647,-1}
+oparam	float	Fac	0		%read{2147483647,-1} %write{252,1318}
+oparam	color	Color	0 0 0		%read{2147483647,-1} %write{251,1317}
+local	float	___436_f	%read{35,216} %write{35,211}
+local	float	___437_f	%read{311,532} %write{311,527}
+local	float	___438_f	%read{647,842} %write{647,837}
+local	float	___439_f	%read{1015,1282} %write{1015,1277}
+local	float	___440_f	%read{18,22} %write{17,17}
+local	float	___441_f	%read{274,296} %write{273,291}
+local	float	___442_f	%read{589,633} %write{588,628}
+local	float	___443_f	%read{913,998} %write{912,993}
+local	float	___444_fscale	%read{35,209} %write{26,204}
+local	float	___444_amp	%read{35,217} %write{27,204}
+local	float	___444_sum	%read{35,249} %write{28,248}
+local	float	___444_octaves	%read{32,206} %write{31,185}
+local	int	___444_n	%read{35,243} %write{32,186}
+local	int	___445_i	%read{35,204} %write{34,204}
+local	float	___446_t	%read{35,204} %write{35,204}
+local	float	___444_rmd	%read{53,238} %write{52,206}
+local	float	___447_t	%read{63,217} %write{60,216}
+local	float	___447_sum2	%read{81,238} %write{64,235}
+local	float	___449_fscale	%read{311,522} %write{302,515}
+local	float	___449_amp	%read{311,533} %write{303,515}
+local	float	___449_sum	%read{311,565} %write{304,564}
+local	float	___449_octaves	%read{308,517} %write{307,491}
+local	int	___449_n	%read{311,559} %write{308,492}
+local	int	___450_i	%read{311,515} %write{310,515}
+local	float	___451_t	%read{311,515} %write{311,515}
+local	float	___449_rmd	%read{334,554} %write{333,517}
+local	float	___452_t	%read{349,533} %write{346,532}
+local	float	___452_sum2	%read{367,554} %write{350,551}
+local	float	___454_fscale	%read{647,835} %write{638,830}
+local	float	___454_amp	%read{647,843} %write{639,830}
+local	float	___454_sum	%read{647,875} %write{640,874}
+local	float	___454_octaves	%read{644,832} %write{643,811}
+local	int	___454_n	%read{647,869} %write{644,812}
+local	int	___455_i	%read{647,830} %write{646,830}
+local	float	___456_t	%read{647,830} %write{647,830}
+local	float	___454_rmd	%read{665,864} %write{664,832}
+local	float	___457_t	%read{675,843} %write{672,842}
+local	float	___457_sum2	%read{693,864} %write{676,861}
+local	float	___459_fscale	%read{1015,1269} %write{1006,1260}
+local	float	___459_amp	%read{1015,1283} %write{1007,1260}
+local	float	___459_sum	%read{1015,1315} %write{1008,1314}
+local	float	___459_octaves	%read{1012,1262} %write{1011,1231}
+local	int	___459_n	%read{1015,1309} %write{1012,1232}
+local	int	___460_i	%read{1015,1260} %write{1014,1260}
+local	float	___461_t	%read{1015,1260} %write{1015,1260}
+local	float	___459_rmd	%read{1043,1304} %write{1042,1262}
+local	float	___462_t	%read{1063,1283} %write{1060,1282}
+local	float	___462_sum2	%read{1081,1304} %write{1064,1301}
+local	float	___506_p	%read{15,178} %write{8,24}
+local	float	___506_value	%read{251,252} %write{85,95}
+local	float	___508_p.x	%read{270,483} %write{258,299} %mystruct{___508_p} %mystructfield{0}
+local	float	___508_p.y	%read{271,484} %write{259,300} %mystruct{___508_p} %mystructfield{1}
+local	float	___508_value	%read{567,568} %write{371,381}
+local	point	___510_p	%read{586,804} %write{572,636}
+local	float	___510_value	%read{877,878} %write{697,707}
+local	float	___512_p.x	%read{906,1221} %write{886,1001} %mystruct{___512_p} %mystructfield{0}
+local	float	___512_p.y	%read{907,1222} %write{887,1002} %mystruct{___512_p} %mystructfield{1}
+local	float	___512_p.z	%read{908,1223} %write{888,1003} %mystruct{___512_p} %mystructfield{2}
+local	float	___512_p.w	%read{909,1224} %write{889,1004} %mystruct{___512_p} %mystructfield{3}
+local	float	___512_value	%read{1317,1318} %write{1085,1095}
+local	point	p	%read{2,883} %write{0,3}
+local	float	w	%read{8,884} %write{4,4}
+const	string	$const1	"1D"		%read{5,5} %write{2147483647,-1}
+temp	int	$tmp1	%read{6,6} %write{5,5}
+const	string	$const2	"noise_texture"		%read{7,885} %write{2147483647,-1}
+const	float	$const3	0		%read{9,1263} %write{2147483647,-1}
+temp	int	$tmp2	%read{10,10} %write{9,9}
+temp	float	$tmp3	%read{23,23} %write{20,22}
+temp	float	$tmp4	%read{15,15} %write{14,14}
+const	string	$const4	"random_float_offset"		%read{11,174} %write{2147483647,-1}
+const	float	$const5	100		%read{13,1219} %write{2147483647,-1}
+temp	float	$tmp5	%read{13,13} %write{12,12}
+const	string	$const6	"hash"		%read{12,1217} %write{2147483647,-1}
+temp	float	$tmp6	%read{14,14} %write{13,13}
+temp	float	$tmp7	%read{17,17} %write{15,15}
+const	string	$const7	"safe_snoise"		%read{16,991} %write{2147483647,-1}
+const	string	$const8	"snoise"		%read{17,993} %write{2147483647,-1}
+temp	int	$tmp8	%read{19,19} %write{18,18}
+temp	float	$tmp9	%read{24,24} %write{23,23}
+const	string	$const9	"fractal_noise"		%read{25,1225} %write{2147483647,-1}
+const	float	$const10	1		%read{26,1302} %write{2147483647,-1}
+const	float	$const11	16		%read{30,1230} %write{2147483647,-1}
+const	string	$const12	"clamp"		%read{29,1229} %write{2147483647,-1}
+temp	float	$tmp10	%read{31,31} %write{30,30}
+const	int	$const13	0		%read{34,1236} %write{2147483647,-1}
+temp	int	$tmp11	%read{35,50} %write{35,50}
+temp	int	$tmp12	%read{33,50} %write{34,50}
+temp	float	$tmp13	%read{35,50} %write{35,50}
+const	string	$const14	"safe_noise"		%read{38,1275} %write{2147483647,-1}
+const	string	$const15	"noise"		%read{39,1277} %write{2147483647,-1}
+temp	int	$tmp14	%read{35,50} %write{35,50}
+const	float	$const16	0.5		%read{42,1280} %write{2147483647,-1}
+temp	float	$tmp15	%read{35,50} %write{35,50}
+const	float	$const17	2		%read{48,1258} %write{2147483647,-1}
+const	int	$const18	1		%read{50,1311} %write{2147483647,-1}
+temp	int	$tmp16	%read{2147483647,-1} %write{35,50}
+temp	float	$tmp17	%read{52,52} %write{51,51}
+temp	int	$tmp18	%read{54,54} %write{53,53}
+temp	float	$tmp19	%read{57,57} %write{55,55}
+temp	int	$tmp20	%read{59,59} %write{58,58}
+temp	float	$tmp21	%read{64,64} %write{63,63}
+temp	int	$tmp22	%read{66,66} %write{65,65}
+temp	float	$tmp23	%read{71,71} %write{66,66}
+temp	int	$tmp24	%read{68,68} %write{67,67}
+temp	int	$tmp25	%read{69,69} %write{68,68}
+temp	int	$tmp26	%read{70,70} %write{69,69}
+temp	float	$tmp27	%read{71,71} %write{70,70}
+temp	float	$tmp28	%read{72,72} %write{71,71}
+temp	int	$tmp29	%read{74,74} %write{73,73}
+temp	int	$tmp30	%read{75,75} %write{74,74}
+temp	float	$tmp31	%read{80,80} %write{75,75}
+const	int	$const19	2		%read{76,1296} %write{2147483647,-1}
+temp	int	$tmp32	%read{77,77} %write{76,76}
+temp	int	$tmp33	%read{78,78} %write{77,77}
+temp	int	$tmp34	%read{79,79} %write{78,78}
+temp	float	$tmp35	%read{80,80} %write{79,79}
+temp	float	$tmp36	%read{81,81} %write{80,80}
+temp	float	$tmp37	%read{83,83} %write{82,82}
+temp	float	$tmp38	%read{85,85} %write{83,83}
+temp	float	$tmp39	%read{85,85} %write{84,84}
+temp	int	$tmp40	%read{88,88} %write{87,87}
+temp	float	$tmp41	%read{93,93} %write{88,88}
+temp	int	$tmp42	%read{90,90} %write{89,89}
+temp	int	$tmp43	%read{91,91} %write{90,90}
+temp	int	$tmp44	%read{92,92} %write{91,91}
+temp	float	$tmp45	%read{93,93} %write{92,92}
+temp	float	$tmp46	%read{94,94} %write{93,93}
+temp	float	$tmp47	%read{251,251} %write{162,172}
+temp	float	$tmp48	%read{101,101} %write{100,100}
+temp	float	$tmp49	%read{99,99} %write{98,98}
+temp	float	$tmp50	%read{100,100} %write{99,99}
+temp	float	$tmp51	%read{112,132} %write{101,101}
+temp	float	$tmp52	%read{108,108} %write{107,107}
+temp	int	$tmp53	%read{112,127} %write{112,127}
+temp	int	$tmp54	%read{110,127} %write{111,127}
+temp	float	$tmp55	%read{112,127} %write{112,127}
+temp	int	$tmp56	%read{112,127} %write{112,127}
+temp	float	$tmp57	%read{112,127} %write{112,127}
+temp	int	$tmp58	%read{2147483647,-1} %write{112,127}
+temp	float	$tmp59	%read{129,129} %write{128,128}
+temp	int	$tmp60	%read{131,131} %write{130,130}
+temp	float	$tmp61	%read{134,134} %write{132,132}
+temp	int	$tmp62	%read{136,136} %write{135,135}
+temp	float	$tmp63	%read{141,141} %write{140,140}
+temp	int	$tmp64	%read{143,143} %write{142,142}
+temp	float	$tmp65	%read{148,148} %write{143,143}
+temp	int	$tmp66	%read{145,145} %write{144,144}
+temp	int	$tmp67	%read{146,146} %write{145,145}
+temp	int	$tmp68	%read{147,147} %write{146,146}
+temp	float	$tmp69	%read{148,148} %write{147,147}
+temp	float	$tmp70	%read{149,149} %write{148,148}
+temp	int	$tmp71	%read{151,151} %write{150,150}
+temp	int	$tmp72	%read{152,152} %write{151,151}
+temp	float	$tmp73	%read{157,157} %write{152,152}
+temp	int	$tmp74	%read{154,154} %write{153,153}
+temp	int	$tmp75	%read{155,155} %write{154,154}
+temp	int	$tmp76	%read{156,156} %write{155,155}
+temp	float	$tmp77	%read{157,157} %write{156,156}
+temp	float	$tmp78	%read{158,158} %write{157,157}
+temp	float	$tmp79	%read{160,160} %write{159,159}
+temp	float	$tmp80	%read{162,162} %write{160,160}
+temp	float	$tmp81	%read{162,162} %write{161,161}
+temp	int	$tmp82	%read{165,165} %write{164,164}
+temp	float	$tmp83	%read{170,170} %write{165,165}
+temp	int	$tmp84	%read{167,167} %write{166,166}
+temp	int	$tmp85	%read{168,168} %write{167,167}
+temp	int	$tmp86	%read{169,169} %write{168,168}
+temp	float	$tmp87	%read{170,170} %write{169,169}
+temp	float	$tmp88	%read{171,171} %write{170,170}
+temp	float	$tmp89	%read{251,251} %write{239,249}
+temp	float	$tmp90	%read{178,178} %write{177,177}
+temp	float	$tmp91	%read{176,176} %write{175,175}
+temp	float	$tmp92	%read{177,177} %write{176,176}
+temp	float	$tmp93	%read{189,209} %write{178,178}
+temp	float	$tmp94	%read{185,185} %write{184,184}
+temp	int	$tmp95	%read{189,204} %write{189,204}
+temp	int	$tmp96	%read{187,204} %write{188,204}
+temp	float	$tmp97	%read{189,204} %write{189,204}
+temp	int	$tmp98	%read{189,204} %write{189,204}
+temp	float	$tmp99	%read{189,204} %write{189,204}
+temp	int	$tmp100	%read{2147483647,-1} %write{189,204}
+temp	float	$tmp101	%read{206,206} %write{205,205}
+temp	int	$tmp102	%read{208,208} %write{207,207}
+temp	float	$tmp103	%read{211,211} %write{209,209}
+temp	int	$tmp104	%read{213,213} %write{212,212}
+temp	float	$tmp105	%read{218,218} %write{217,217}
+temp	int	$tmp106	%read{220,220} %write{219,219}
+temp	float	$tmp107	%read{225,225} %write{220,220}
+temp	int	$tmp108	%read{222,222} %write{221,221}
+temp	int	$tmp109	%read{223,223} %write{222,222}
+temp	int	$tmp110	%read{224,224} %write{223,223}
+temp	float	$tmp111	%read{225,225} %write{224,224}
+temp	float	$tmp112	%read{226,226} %write{225,225}
+temp	int	$tmp113	%read{228,228} %write{227,227}
+temp	int	$tmp114	%read{229,229} %write{228,228}
+temp	float	$tmp115	%read{234,234} %write{229,229}
+temp	int	$tmp116	%read{231,231} %write{230,230}
+temp	int	$tmp117	%read{232,232} %write{231,231}
+temp	int	$tmp118	%read{233,233} %write{232,232}
+temp	float	$tmp119	%read{234,234} %write{233,233}
+temp	float	$tmp120	%read{235,235} %write{234,234}
+temp	float	$tmp121	%read{237,237} %write{236,236}
+temp	float	$tmp122	%read{239,239} %write{237,237}
+temp	float	$tmp123	%read{239,239} %write{238,238}
+temp	int	$tmp124	%read{242,242} %write{241,241}
+temp	float	$tmp125	%read{247,247} %write{242,242}
+temp	int	$tmp126	%read{244,244} %write{243,243}
+temp	int	$tmp127	%read{245,245} %write{244,244}
+temp	int	$tmp128	%read{246,246} %write{245,245}
+temp	float	$tmp129	%read{247,247} %write{246,246}
+temp	float	$tmp130	%read{248,248} %write{247,247}
+const	string	$const20	"2D"		%read{253,253} %write{2147483647,-1}
+temp	int	$tmp131	%read{254,254} %write{253,253}
+temp	float	$tmp132.x	%read{258,258} %write{255,255}
+temp	float	$tmp132.y	%read{259,259} %write{256,256}
+temp	int	$tmp133	%read{261,261} %write{260,260}
+temp	float	$tmp134.x	%read{299,299} %write{279,279}
+temp	float	$tmp134.y	%read{300,300} %write{297,297}
+temp	float	$tmp135	%read{279,279} %write{276,278}
+temp	float	$tmp136.x	%read{273,273} %write{270,270}
+temp	float	$tmp136.y	%read{273,273} %write{271,271}
+temp	float	$tmp137.x	%read{270,270} %write{265,265}
+temp	float	$tmp137.y	%read{271,271} %write{268,268}
+const	string	$const21	"random_vector2_offset"		%read{262,475} %write{2147483647,-1}
+temp	float	$tmp138	%read{264,264} %write{263,263}
+temp	float	$tmp139	%read{265,265} %write{264,264}
+temp	float	$tmp140	%read{267,267} %write{266,266}
+temp	float	$tmp141	%read{268,268} %write{267,267}
+const	string	$const22	"__operator__add__"		%read{269,1220} %write{2147483647,-1}
+temp	int	$tmp142	%read{275,275} %write{274,274}
+temp	float	$tmp143	%read{297,297} %write{294,296}
+temp	float	$tmp144.x	%read{291,291} %write{288,288}
+temp	float	$tmp144.y	%read{291,291} %write{289,289}
+temp	float	$tmp145.x	%read{288,288} %write{283,283}
+temp	float	$tmp145.y	%read{289,289} %write{286,286}
+temp	float	$tmp146	%read{282,282} %write{281,281}
+temp	float	$tmp147	%read{283,283} %write{282,282}
+temp	float	$tmp148	%read{285,285} %write{284,284}
+temp	float	$tmp149	%read{286,286} %write{285,285}
+temp	int	$tmp150	%read{293,293} %write{292,292}
+temp	float	$tmp151	%read{307,307} %write{306,306}
+temp	int	$tmp152	%read{311,331} %write{311,331}
+temp	int	$tmp153	%read{309,331} %write{310,331}
+temp	float	$tmp154.x	%read{311,331} %write{311,331}
+temp	float	$tmp154.y	%read{311,331} %write{311,331}
+const	string	$const23	"__operator__mul__"		%read{313,1270} %write{2147483647,-1}
+temp	float	$tmp155.x	%read{311,331} %write{311,331}
+temp	float	$tmp155.y	%read{311,331} %write{311,331}
+temp	int	$tmp156	%read{311,331} %write{311,331}
+temp	float	$tmp157	%read{311,331} %write{311,331}
+temp	int	$tmp158	%read{2147483647,-1} %write{311,331}
+temp	float	$tmp159	%read{333,333} %write{332,332}
+temp	int	$tmp160	%read{335,335} %write{334,334}
+temp	float	$tmp161.x	%read{343,343} %write{340,340}
+temp	float	$tmp161.y	%read{343,343} %write{341,341}
+temp	float	$tmp162.x	%read{340,340} %write{337,337}
+temp	float	$tmp162.y	%read{341,341} %write{338,338}
+temp	int	$tmp163	%read{345,345} %write{344,344}
+temp	float	$tmp164	%read{350,350} %write{349,349}
+temp	int	$tmp165	%read{352,352} %write{351,351}
+temp	float	$tmp166	%read{357,357} %write{352,352}
+temp	int	$tmp167	%read{354,354} %write{353,353}
+temp	int	$tmp168	%read{355,355} %write{354,354}
+temp	int	$tmp169	%read{356,356} %write{355,355}
+temp	float	$tmp170	%read{357,357} %write{356,356}
+temp	float	$tmp171	%read{358,358} %write{357,357}
+temp	int	$tmp172	%read{360,360} %write{359,359}
+temp	int	$tmp173	%read{361,361} %write{360,360}
+temp	float	$tmp174	%read{366,366} %write{361,361}
+temp	int	$tmp175	%read{363,363} %write{362,362}
+temp	int	$tmp176	%read{364,364} %write{363,363}
+temp	int	$tmp177	%read{365,365} %write{364,364}
+temp	float	$tmp178	%read{366,366} %write{365,365}
+temp	float	$tmp179	%read{367,367} %write{366,366}
+temp	float	$tmp180	%read{369,369} %write{368,368}
+temp	float	$tmp181	%read{371,371} %write{369,369}
+temp	float	$tmp182	%read{371,371} %write{370,370}
+temp	int	$tmp183	%read{374,374} %write{373,373}
+temp	float	$tmp184	%read{379,379} %write{374,374}
+temp	int	$tmp185	%read{376,376} %write{375,375}
+temp	int	$tmp186	%read{377,377} %write{376,376}
+temp	int	$tmp187	%read{378,378} %write{377,377}
+temp	float	$tmp188	%read{379,379} %write{378,378}
+temp	float	$tmp189	%read{380,380} %write{379,379}
+temp	float	$tmp190	%read{567,567} %write{463,473}
+temp	float	$tmp191.x	%read{403,432} %write{391,391}
+temp	float	$tmp191.y	%read{403,433} %write{392,392}
+temp	float	$tmp192.x	%read{391,391} %write{386,386}
+temp	float	$tmp192.y	%read{392,392} %write{389,389}
+temp	float	$tmp193	%read{385,385} %write{384,384}
+temp	float	$tmp194	%read{386,386} %write{385,385}
+temp	float	$tmp195	%read{388,388} %write{387,387}
+temp	float	$tmp196	%read{389,389} %write{388,388}
+temp	float	$tmp197	%read{399,399} %write{398,398}
+temp	int	$tmp198	%read{403,423} %write{403,423}
+temp	int	$tmp199	%read{401,423} %write{402,423}
+temp	float	$tmp200.x	%read{403,423} %write{403,423}
+temp	float	$tmp200.y	%read{403,423} %write{403,423}
+temp	float	$tmp201.x	%read{403,423} %write{403,423}
+temp	float	$tmp201.y	%read{403,423} %write{403,423}
+temp	int	$tmp202	%read{403,423} %write{403,423}
+temp	float	$tmp203	%read{403,423} %write{403,423}
+temp	int	$tmp204	%read{2147483647,-1} %write{403,423}
+temp	float	$tmp205	%read{425,425} %write{424,424}
+temp	int	$tmp206	%read{427,427} %write{426,426}
+temp	float	$tmp207.x	%read{435,435} %write{432,432}
+temp	float	$tmp207.y	%read{435,435} %write{433,433}
+temp	float	$tmp208.x	%read{432,432} %write{429,429}
+temp	float	$tmp208.y	%read{433,433} %write{430,430}
+temp	int	$tmp209	%read{437,437} %write{436,436}
+temp	float	$tmp210	%read{442,442} %write{441,441}
+temp	int	$tmp211	%read{444,444} %write{443,443}
+temp	float	$tmp212	%read{449,449} %write{444,444}
+temp	int	$tmp213	%read{446,446} %write{445,445}
+temp	int	$tmp214	%read{447,447} %write{446,446}
+temp	int	$tmp215	%read{448,448} %write{447,447}
+temp	float	$tmp216	%read{449,449} %write{448,448}
+temp	float	$tmp217	%read{450,450} %write{449,449}
+temp	int	$tmp218	%read{452,452} %write{451,451}
+temp	int	$tmp219	%read{453,453} %write{452,452}
+temp	float	$tmp220	%read{458,458} %write{453,453}
+temp	int	$tmp221	%read{455,455} %write{454,454}
+temp	int	$tmp222	%read{456,456} %write{455,455}
+temp	int	$tmp223	%read{457,457} %write{456,456}
+temp	float	$tmp224	%read{458,458} %write{457,457}
+temp	float	$tmp225	%read{459,459} %write{458,458}
+temp	float	$tmp226	%read{461,461} %write{460,460}
+temp	float	$tmp227	%read{463,463} %write{461,461}
+temp	float	$tmp228	%read{463,463} %write{462,462}
+temp	int	$tmp229	%read{466,466} %write{465,465}
+temp	float	$tmp230	%read{471,471} %write{466,466}
+temp	int	$tmp231	%read{468,468} %write{467,467}
+temp	int	$tmp232	%read{469,469} %write{468,468}
+temp	int	$tmp233	%read{470,470} %write{469,469}
+temp	float	$tmp234	%read{471,471} %write{470,470}
+temp	float	$tmp235	%read{472,472} %write{471,471}
+temp	float	$tmp236	%read{567,567} %write{555,565}
+temp	float	$tmp237.x	%read{495,524} %write{483,483}
+temp	float	$tmp237.y	%read{495,525} %write{484,484}
+temp	float	$tmp238.x	%read{483,483} %write{478,478}
+temp	float	$tmp238.y	%read{484,484} %write{481,481}
+const	float	$const24	3		%read{476,1217} %write{2147483647,-1}
+temp	float	$tmp239	%read{477,477} %write{476,476}
+temp	float	$tmp240	%read{478,478} %write{477,477}
+temp	float	$tmp241	%read{480,480} %write{479,479}
+temp	float	$tmp242	%read{481,481} %write{480,480}
+temp	float	$tmp243	%read{491,491} %write{490,490}
+temp	int	$tmp244	%read{495,515} %write{495,515}
+temp	int	$tmp245	%read{493,515} %write{494,515}
+temp	float	$tmp246.x	%read{495,515} %write{495,515}
+temp	float	$tmp246.y	%read{495,515} %write{495,515}
+temp	float	$tmp247.x	%read{495,515} %write{495,515}
+temp	float	$tmp247.y	%read{495,515} %write{495,515}
+temp	int	$tmp248	%read{495,515} %write{495,515}
+temp	float	$tmp249	%read{495,515} %write{495,515}
+temp	int	$tmp250	%read{2147483647,-1} %write{495,515}
+temp	float	$tmp251	%read{517,517} %write{516,516}
+temp	int	$tmp252	%read{519,519} %write{518,518}
+temp	float	$tmp253.x	%read{527,527} %write{524,524}
+temp	float	$tmp253.y	%read{527,527} %write{525,525}
+temp	float	$tmp254.x	%read{524,524} %write{521,521}
+temp	float	$tmp254.y	%read{525,525} %write{522,522}
+temp	int	$tmp255	%read{529,529} %write{528,528}
+temp	float	$tmp256	%read{534,534} %write{533,533}
+temp	int	$tmp257	%read{536,536} %write{535,535}
+temp	float	$tmp258	%read{541,541} %write{536,536}
+temp	int	$tmp259	%read{538,538} %write{537,537}
+temp	int	$tmp260	%read{539,539} %write{538,538}
+temp	int	$tmp261	%read{540,540} %write{539,539}
+temp	float	$tmp262	%read{541,541} %write{540,540}
+temp	float	$tmp263	%read{542,542} %write{541,541}
+temp	int	$tmp264	%read{544,544} %write{543,543}
+temp	int	$tmp265	%read{545,545} %write{544,544}
+temp	float	$tmp266	%read{550,550} %write{545,545}
+temp	int	$tmp267	%read{547,547} %write{546,546}
+temp	int	$tmp268	%read{548,548} %write{547,547}
+temp	int	$tmp269	%read{549,549} %write{548,548}
+temp	float	$tmp270	%read{550,550} %write{549,549}
+temp	float	$tmp271	%read{551,551} %write{550,550}
+temp	float	$tmp272	%read{553,553} %write{552,552}
+temp	float	$tmp273	%read{555,555} %write{553,553}
+temp	float	$tmp274	%read{555,555} %write{554,554}
+temp	int	$tmp275	%read{558,558} %write{557,557}
+temp	float	$tmp276	%read{563,563} %write{558,558}
+temp	int	$tmp277	%read{560,560} %write{559,559}
+temp	int	$tmp278	%read{561,561} %write{560,560}
+temp	int	$tmp279	%read{562,562} %write{561,561}
+temp	float	$tmp280	%read{563,563} %write{562,562}
+temp	float	$tmp281	%read{564,564} %write{563,563}
+const	string	$const25	"3D"		%read{569,569} %write{2147483647,-1}
+temp	int	$tmp282	%read{570,570} %write{569,569}
+temp	int	$tmp283	%read{574,574} %write{573,573}
+temp	point	$tmp284	%read{636,636} %write{635,635}
+temp	float	$tmp285	%read{594,594} %write{591,593}
+temp	point	$tmp286	%read{586,586} %write{585,585}
+const	string	$const26	"random_vector3_offset"		%read{575,793} %write{2147483647,-1}
+temp	float	$tmp287	%read{577,577} %write{576,576}
+temp	float	$tmp288	%read{578,578} %write{577,577}
+temp	float	$tmp289	%read{585,585} %write{578,578}
+temp	float	$tmp290	%read{580,580} %write{579,579}
+temp	float	$tmp291	%read{581,581} %write{580,580}
+temp	float	$tmp292	%read{585,585} %write{581,581}
+temp	float	$tmp293	%read{583,583} %write{582,582}
+temp	float	$tmp294	%read{584,584} %write{583,583}
+temp	float	$tmp295	%read{585,585} %write{584,584}
+temp	point	$tmp296	%read{588,588} %write{586,586}
+temp	int	$tmp297	%read{590,590} %write{589,589}
+temp	float	$tmp298	%read{635,635} %write{594,594}
+temp	float	$tmp299	%read{614,614} %write{611,613}
+temp	point	$tmp300	%read{606,606} %write{605,605}
+temp	float	$tmp301	%read{597,597} %write{596,596}
+temp	float	$tmp302	%read{598,598} %write{597,597}
+temp	float	$tmp303	%read{605,605} %write{598,598}
+temp	float	$tmp304	%read{600,600} %write{599,599}
+temp	float	$tmp305	%read{601,601} %write{600,600}
+temp	float	$tmp306	%read{605,605} %write{601,601}
+temp	float	$tmp307	%read{603,603} %write{602,602}
+temp	float	$tmp308	%read{604,604} %write{603,603}
+temp	float	$tmp309	%read{605,605} %write{604,604}
+temp	point	$tmp310	%read{608,608} %write{606,606}
+temp	int	$tmp311	%read{610,610} %write{609,609}
+temp	float	$tmp312	%read{635,635} %write{614,614}
+temp	float	$tmp313	%read{634,634} %write{631,633}
+temp	point	$tmp314	%read{626,626} %write{625,625}
+temp	float	$tmp315	%read{617,617} %write{616,616}
+temp	float	$tmp316	%read{618,618} %write{617,617}
+temp	float	$tmp317	%read{625,625} %write{618,618}
+temp	float	$tmp318	%read{620,620} %write{619,619}
+temp	float	$tmp319	%read{621,621} %write{620,620}
+temp	float	$tmp320	%read{625,625} %write{621,621}
+temp	float	$tmp321	%read{623,623} %write{622,622}
+temp	float	$tmp322	%read{624,624} %write{623,623}
+temp	float	$tmp323	%read{625,625} %write{624,624}
+temp	point	$tmp324	%read{628,628} %write{626,626}
+temp	int	$tmp325	%read{630,630} %write{629,629}
+temp	float	$tmp326	%read{635,635} %write{634,634}
+temp	float	$tmp327	%read{643,643} %write{642,642}
+temp	int	$tmp328	%read{647,662} %write{647,662}
+temp	int	$tmp329	%read{645,662} %write{646,662}
+temp	point	$tmp330	%read{647,662} %write{647,662}
+temp	int	$tmp331	%read{647,662} %write{647,662}
+temp	float	$tmp332	%read{647,662} %write{647,662}
+temp	int	$tmp333	%read{2147483647,-1} %write{647,662}
+temp	float	$tmp334	%read{664,664} %write{663,663}
+temp	int	$tmp335	%read{666,666} %write{665,665}
+temp	point	$tmp336	%read{669,669} %write{667,667}
+temp	int	$tmp337	%read{671,671} %write{670,670}
+temp	float	$tmp338	%read{676,676} %write{675,675}
+temp	int	$tmp339	%read{678,678} %write{677,677}
+temp	float	$tmp340	%read{683,683} %write{678,678}
+temp	int	$tmp341	%read{680,680} %write{679,679}
+temp	int	$tmp342	%read{681,681} %write{680,680}
+temp	int	$tmp343	%read{682,682} %write{681,681}
+temp	float	$tmp344	%read{683,683} %write{682,682}
+temp	float	$tmp345	%read{684,684} %write{683,683}
+temp	int	$tmp346	%read{686,686} %write{685,685}
+temp	int	$tmp347	%read{687,687} %write{686,686}
+temp	float	$tmp348	%read{692,692} %write{687,687}
+temp	int	$tmp349	%read{689,689} %write{688,688}
+temp	int	$tmp350	%read{690,690} %write{689,689}
+temp	int	$tmp351	%read{691,691} %write{690,690}
+temp	float	$tmp352	%read{692,692} %write{691,691}
+temp	float	$tmp353	%read{693,693} %write{692,692}
+temp	float	$tmp354	%read{695,695} %write{694,694}
+temp	float	$tmp355	%read{697,697} %write{695,695}
+temp	float	$tmp356	%read{697,697} %write{696,696}
+temp	int	$tmp357	%read{700,700} %write{699,699}
+temp	float	$tmp358	%read{705,705} %write{700,700}
+temp	int	$tmp359	%read{702,702} %write{701,701}
+temp	int	$tmp360	%read{703,703} %write{702,702}
+temp	int	$tmp361	%read{704,704} %write{703,703}
+temp	float	$tmp362	%read{705,705} %write{704,704}
+temp	float	$tmp363	%read{706,706} %write{705,705}
+temp	float	$tmp364	%read{877,877} %write{781,791}
+temp	point	$tmp365	%read{720,720} %write{719,719}
+temp	float	$tmp366	%read{711,711} %write{710,710}
+temp	float	$tmp367	%read{712,712} %write{711,711}
+temp	float	$tmp368	%read{719,719} %write{712,712}
+temp	float	$tmp369	%read{714,714} %write{713,713}
+temp	float	$tmp370	%read{715,715} %write{714,714}
+temp	float	$tmp371	%read{719,719} %write{715,715}
+temp	float	$tmp372	%read{717,717} %write{716,716}
+temp	float	$tmp373	%read{718,718} %write{717,717}
+temp	float	$tmp374	%read{719,719} %write{718,718}
+temp	point	$tmp375	%read{731,751} %write{720,720}
+temp	float	$tmp376	%read{727,727} %write{726,726}
+temp	int	$tmp377	%read{731,746} %write{731,746}
+temp	int	$tmp378	%read{729,746} %write{730,746}
+temp	point	$tmp379	%read{731,746} %write{731,746}
+temp	int	$tmp380	%read{731,746} %write{731,746}
+temp	float	$tmp381	%read{731,746} %write{731,746}
+temp	int	$tmp382	%read{2147483647,-1} %write{731,746}
+temp	float	$tmp383	%read{748,748} %write{747,747}
+temp	int	$tmp384	%read{750,750} %write{749,749}
+temp	point	$tmp385	%read{753,753} %write{751,751}
+temp	int	$tmp386	%read{755,755} %write{754,754}
+temp	float	$tmp387	%read{760,760} %write{759,759}
+temp	int	$tmp388	%read{762,762} %write{761,761}
+temp	float	$tmp389	%read{767,767} %write{762,762}
+temp	int	$tmp390	%read{764,764} %write{763,763}
+temp	int	$tmp391	%read{765,765} %write{764,764}
+temp	int	$tmp392	%read{766,766} %write{765,765}
+temp	float	$tmp393	%read{767,767} %write{766,766}
+temp	float	$tmp394	%read{768,768} %write{767,767}
+temp	int	$tmp395	%read{770,770} %write{769,769}
+temp	int	$tmp396	%read{771,771} %write{770,770}
+temp	float	$tmp397	%read{776,776} %write{771,771}
+temp	int	$tmp398	%read{773,773} %write{772,772}
+temp	int	$tmp399	%read{774,774} %write{773,773}
+temp	int	$tmp400	%read{775,775} %write{774,774}
+temp	float	$tmp401	%read{776,776} %write{775,775}
+temp	float	$tmp402	%read{777,777} %write{776,776}
+temp	float	$tmp403	%read{779,779} %write{778,778}
+temp	float	$tmp404	%read{781,781} %write{779,779}
+temp	float	$tmp405	%read{781,781} %write{780,780}
+temp	int	$tmp406	%read{784,784} %write{783,783}
+temp	float	$tmp407	%read{789,789} %write{784,784}
+temp	int	$tmp408	%read{786,786} %write{785,785}
+temp	int	$tmp409	%read{787,787} %write{786,786}
+temp	int	$tmp410	%read{788,788} %write{787,787}
+temp	float	$tmp411	%read{789,789} %write{788,788}
+temp	float	$tmp412	%read{790,790} %write{789,789}
+temp	float	$tmp413	%read{877,877} %write{865,875}
+temp	point	$tmp414	%read{804,804} %write{803,803}
+const	float	$const27	4		%read{794,1107} %write{2147483647,-1}
+temp	float	$tmp415	%read{795,795} %write{794,794}
+temp	float	$tmp416	%read{796,796} %write{795,795}
+temp	float	$tmp417	%read{803,803} %write{796,796}
+temp	float	$tmp418	%read{798,798} %write{797,797}
+temp	float	$tmp419	%read{799,799} %write{798,798}
+temp	float	$tmp420	%read{803,803} %write{799,799}
+temp	float	$tmp421	%read{801,801} %write{800,800}
+temp	float	$tmp422	%read{802,802} %write{801,801}
+temp	float	$tmp423	%read{803,803} %write{802,802}
+temp	point	$tmp424	%read{815,835} %write{804,804}
+temp	float	$tmp425	%read{811,811} %write{810,810}
+temp	int	$tmp426	%read{815,830} %write{815,830}
+temp	int	$tmp427	%read{813,830} %write{814,830}
+temp	point	$tmp428	%read{815,830} %write{815,830}
+temp	int	$tmp429	%read{815,830} %write{815,830}
+temp	float	$tmp430	%read{815,830} %write{815,830}
+temp	int	$tmp431	%read{2147483647,-1} %write{815,830}
+temp	float	$tmp432	%read{832,832} %write{831,831}
+temp	int	$tmp433	%read{834,834} %write{833,833}
+temp	point	$tmp434	%read{837,837} %write{835,835}
+temp	int	$tmp435	%read{839,839} %write{838,838}
+temp	float	$tmp436	%read{844,844} %write{843,843}
+temp	int	$tmp437	%read{846,846} %write{845,845}
+temp	float	$tmp438	%read{851,851} %write{846,846}
+temp	int	$tmp439	%read{848,848} %write{847,847}
+temp	int	$tmp440	%read{849,849} %write{848,848}
+temp	int	$tmp441	%read{850,850} %write{849,849}
+temp	float	$tmp442	%read{851,851} %write{850,850}
+temp	float	$tmp443	%read{852,852} %write{851,851}
+temp	int	$tmp444	%read{854,854} %write{853,853}
+temp	int	$tmp445	%read{855,855} %write{854,854}
+temp	float	$tmp446	%read{860,860} %write{855,855}
+temp	int	$tmp447	%read{857,857} %write{856,856}
+temp	int	$tmp448	%read{858,858} %write{857,857}
+temp	int	$tmp449	%read{859,859} %write{858,858}
+temp	float	$tmp450	%read{860,860} %write{859,859}
+temp	float	$tmp451	%read{861,861} %write{860,860}
+temp	float	$tmp452	%read{863,863} %write{862,862}
+temp	float	$tmp453	%read{865,865} %write{863,863}
+temp	float	$tmp454	%read{865,865} %write{864,864}
+temp	int	$tmp455	%read{868,868} %write{867,867}
+temp	float	$tmp456	%read{873,873} %write{868,868}
+temp	int	$tmp457	%read{870,870} %write{869,869}
+temp	int	$tmp458	%read{871,871} %write{870,870}
+temp	int	$tmp459	%read{872,872} %write{871,871}
+temp	float	$tmp460	%read{873,873} %write{872,872}
+temp	float	$tmp461	%read{874,874} %write{873,873}
+const	string	$const28	"4D"		%read{879,879} %write{2147483647,-1}
+temp	int	$tmp462	%read{880,880} %write{879,879}
+temp	float	$tmp463.x	%read{886,886} %write{881,881}
+temp	float	$tmp463.y	%read{887,887} %write{882,882}
+temp	float	$tmp463.z	%read{888,888} %write{883,883}
+temp	float	$tmp463.w	%read{889,889} %write{884,884}
+temp	int	$tmp464	%read{891,891} %write{890,890}
+temp	float	$tmp465.x	%read{1001,1001} %write{918,918}
+temp	float	$tmp465.y	%read{1002,1002} %write{945,945}
+temp	float	$tmp465.z	%read{1003,1003} %write{972,972}
+temp	float	$tmp465.w	%read{1004,1004} %write{999,999}
+temp	float	$tmp466	%read{918,918} %write{915,917}
+temp	float	$tmp467.x	%read{911,911} %write{906,906}
+temp	float	$tmp467.y	%read{911,911} %write{907,907}
+temp	float	$tmp467.z	%read{911,911} %write{908,908}
+temp	float	$tmp467.w	%read{912,912} %write{909,909}
+temp	float	$tmp468.x	%read{906,906} %write{895,895}
+temp	float	$tmp468.y	%read{907,907} %write{898,898}
+temp	float	$tmp468.z	%read{908,908} %write{901,901}
+temp	float	$tmp468.w	%read{909,909} %write{904,904}
+const	string	$const29	"random_vector4_offset"		%read{892,1207} %write{2147483647,-1}
+temp	float	$tmp469	%read{894,894} %write{893,893}
+temp	float	$tmp470	%read{895,895} %write{894,894}
+temp	float	$tmp471	%read{897,897} %write{896,896}
+temp	float	$tmp472	%read{898,898} %write{897,897}
+temp	float	$tmp473	%read{900,900} %write{899,899}
+temp	float	$tmp474	%read{901,901} %write{900,900}
+temp	float	$tmp475	%read{903,903} %write{902,902}
+temp	float	$tmp476	%read{904,904} %write{903,903}
+temp	point	$tmp477	%read{912,912} %write{911,911}
+temp	int	$tmp478	%read{914,914} %write{913,913}
+temp	float	$tmp479	%read{945,945} %write{942,944}
+temp	float	$tmp480.x	%read{938,938} %write{933,933}
+temp	float	$tmp480.y	%read{938,938} %write{934,934}
+temp	float	$tmp480.z	%read{938,938} %write{935,935}
+temp	float	$tmp480.w	%read{939,939} %write{936,936}
+temp	float	$tmp481.x	%read{933,933} %write{922,922}
+temp	float	$tmp481.y	%read{934,934} %write{925,925}
+temp	float	$tmp481.z	%read{935,935} %write{928,928}
+temp	float	$tmp481.w	%read{936,936} %write{931,931}
+temp	float	$tmp482	%read{921,921} %write{920,920}
+temp	float	$tmp483	%read{922,922} %write{921,921}
+temp	float	$tmp484	%read{924,924} %write{923,923}
+temp	float	$tmp485	%read{925,925} %write{924,924}
+temp	float	$tmp486	%read{927,927} %write{926,926}
+temp	float	$tmp487	%read{928,928} %write{927,927}
+temp	float	$tmp488	%read{930,930} %write{929,929}
+temp	float	$tmp489	%read{931,931} %write{930,930}
+temp	point	$tmp490	%read{939,939} %write{938,938}
+temp	int	$tmp491	%read{941,941} %write{940,940}
+temp	float	$tmp492	%read{972,972} %write{969,971}
+temp	float	$tmp493.x	%read{965,965} %write{960,960}
+temp	float	$tmp493.y	%read{965,965} %write{961,961}
+temp	float	$tmp493.z	%read{965,965} %write{962,962}
+temp	float	$tmp493.w	%read{966,966} %write{963,963}
+temp	float	$tmp494.x	%read{960,960} %write{949,949}
+temp	float	$tmp494.y	%read{961,961} %write{952,952}
+temp	float	$tmp494.z	%read{962,962} %write{955,955}
+temp	float	$tmp494.w	%read{963,963} %write{958,958}
+temp	float	$tmp495	%read{948,948} %write{947,947}
+temp	float	$tmp496	%read{949,949} %write{948,948}
+temp	float	$tmp497	%read{951,951} %write{950,950}
+temp	float	$tmp498	%read{952,952} %write{951,951}
+temp	float	$tmp499	%read{954,954} %write{953,953}
+temp	float	$tmp500	%read{955,955} %write{954,954}
+temp	float	$tmp501	%read{957,957} %write{956,956}
+temp	float	$tmp502	%read{958,958} %write{957,957}
+temp	point	$tmp503	%read{966,966} %write{965,965}
+temp	int	$tmp504	%read{968,968} %write{967,967}
+temp	float	$tmp505	%read{999,999} %write{996,998}
+temp	float	$tmp506.x	%read{992,992} %write{987,987}
+temp	float	$tmp506.y	%read{992,992} %write{988,988}
+temp	float	$tmp506.z	%read{992,992} %write{989,989}
+temp	float	$tmp506.w	%read{993,993} %write{990,990}
+temp	float	$tmp507.x	%read{987,987} %write{976,976}
+temp	float	$tmp507.y	%read{988,988} %write{979,979}
+temp	float	$tmp507.z	%read{989,989} %write{982,982}
+temp	float	$tmp507.w	%read{990,990} %write{985,985}
+temp	float	$tmp508	%read{975,975} %write{974,974}
+temp	float	$tmp509	%read{976,976} %write{975,975}
+temp	float	$tmp510	%read{978,978} %write{977,977}
+temp	float	$tmp511	%read{979,979} %write{978,978}
+temp	float	$tmp512	%read{981,981} %write{980,980}
+temp	float	$tmp513	%read{982,982} %write{981,981}
+temp	float	$tmp514	%read{984,984} %write{983,983}
+temp	float	$tmp515	%read{985,985} %write{984,984}
+temp	point	$tmp516	%read{993,993} %write{992,992}
+temp	int	$tmp517	%read{995,995} %write{994,994}
+temp	float	$tmp518	%read{1011,1011} %write{1010,1010}
+temp	int	$tmp519	%read{1015,1040} %write{1015,1040}
+temp	int	$tmp520	%read{1013,1040} %write{1014,1040}
+temp	float	$tmp521.x	%read{1015,1040} %write{1015,1040}
+temp	float	$tmp521.y	%read{1015,1040} %write{1015,1040}
+temp	float	$tmp521.z	%read{1015,1040} %write{1015,1040}
+temp	float	$tmp521.w	%read{1015,1040} %write{1015,1040}
+temp	float	$tmp522.x	%read{1015,1040} %write{1015,1040}
+temp	float	$tmp522.y	%read{1015,1040} %write{1015,1040}
+temp	float	$tmp522.z	%read{1015,1040} %write{1015,1040}
+temp	float	$tmp522.w	%read{1015,1040} %write{1015,1040}
+temp	point	$tmp523	%read{1015,1040} %write{1015,1040}
+temp	int	$tmp524	%read{1015,1040} %write{1015,1040}
+temp	float	$tmp525	%read{1015,1040} %write{1015,1040}
+temp	int	$tmp526	%read{2147483647,-1} %write{1015,1040}
+temp	float	$tmp527	%read{1042,1042} %write{1041,1041}
+temp	int	$tmp528	%read{1044,1044} %write{1043,1043}
+temp	float	$tmp529.x	%read{1056,1056} %write{1051,1051}
+temp	float	$tmp529.y	%read{1056,1056} %write{1052,1052}
+temp	float	$tmp529.z	%read{1056,1056} %write{1053,1053}
+temp	float	$tmp529.w	%read{1057,1057} %write{1054,1054}
+temp	float	$tmp530.x	%read{1051,1051} %write{1046,1046}
+temp	float	$tmp530.y	%read{1052,1052} %write{1047,1047}
+temp	float	$tmp530.z	%read{1053,1053} %write{1048,1048}
+temp	float	$tmp530.w	%read{1054,1054} %write{1049,1049}
+temp	point	$tmp531	%read{1057,1057} %write{1056,1056}
+temp	int	$tmp532	%read{1059,1059} %write{1058,1058}
+temp	float	$tmp533	%read{1064,1064} %write{1063,1063}
+temp	int	$tmp534	%read{1066,1066} %write{1065,1065}
+temp	float	$tmp535	%read{1071,1071} %write{1066,1066}
+temp	int	$tmp536	%read{1068,1068} %write{1067,1067}
+temp	int	$tmp537	%read{1069,1069} %write{1068,1068}
+temp	int	$tmp538	%read{1070,1070} %write{1069,1069}
+temp	float	$tmp539	%read{1071,1071} %write{1070,1070}
+temp	float	$tmp540	%read{1072,1072} %write{1071,1071}
+temp	int	$tmp541	%read{1074,1074} %write{1073,1073}
+temp	int	$tmp542	%read{1075,1075} %write{1074,1074}
+temp	float	$tmp543	%read{1080,1080} %write{1075,1075}
+temp	int	$tmp544	%read{1077,1077} %write{1076,1076}
+temp	int	$tmp545	%read{1078,1078} %write{1077,1077}
+temp	int	$tmp546	%read{1079,1079} %write{1078,1078}
+temp	float	$tmp547	%read{1080,1080} %write{1079,1079}
+temp	float	$tmp548	%read{1081,1081} %write{1080,1080}
+temp	float	$tmp549	%read{1083,1083} %write{1082,1082}
+temp	float	$tmp550	%read{1085,1085} %write{1083,1083}
+temp	float	$tmp551	%read{1085,1085} %write{1084,1084}
+temp	int	$tmp552	%read{1088,1088} %write{1087,1087}
+temp	float	$tmp553	%read{1093,1093} %write{1088,1088}
+temp	int	$tmp554	%read{1090,1090} %write{1089,1089}
+temp	int	$tmp555	%read{1091,1091} %write{1090,1090}
+temp	int	$tmp556	%read{1092,1092} %write{1091,1091}
+temp	float	$tmp557	%read{1093,1093} %write{1092,1092}
+temp	float	$tmp558	%read{1094,1094} %write{1093,1093}
+temp	float	$tmp559	%read{1317,1317} %write{1195,1205}
+temp	float	$tmp560.x	%read{1125,1161} %write{1111,1111}
+temp	float	$tmp560.y	%read{1125,1162} %write{1112,1112}
+temp	float	$tmp560.z	%read{1125,1163} %write{1113,1113}
+temp	float	$tmp560.w	%read{1125,1164} %write{1114,1114}
+temp	float	$tmp561.x	%read{1111,1111} %write{1100,1100}
+temp	float	$tmp561.y	%read{1112,1112} %write{1103,1103}
+temp	float	$tmp561.z	%read{1113,1113} %write{1106,1106}
+temp	float	$tmp561.w	%read{1114,1114} %write{1109,1109}
+temp	float	$tmp562	%read{1099,1099} %write{1098,1098}
+temp	float	$tmp563	%read{1100,1100} %write{1099,1099}
+temp	float	$tmp564	%read{1102,1102} %write{1101,1101}
+temp	float	$tmp565	%read{1103,1103} %write{1102,1102}
+temp	float	$tmp566	%read{1105,1105} %write{1104,1104}
+temp	float	$tmp567	%read{1106,1106} %write{1105,1105}
+temp	float	$tmp568	%read{1108,1108} %write{1107,1107}
+temp	float	$tmp569	%read{1109,1109} %write{1108,1108}
+temp	float	$tmp570	%read{1121,1121} %write{1120,1120}
+temp	int	$tmp571	%read{1125,1150} %write{1125,1150}
+temp	int	$tmp572	%read{1123,1150} %write{1124,1150}
+temp	float	$tmp573.x	%read{1125,1150} %write{1125,1150}
+temp	float	$tmp573.y	%read{1125,1150} %write{1125,1150}
+temp	float	$tmp573.z	%read{1125,1150} %write{1125,1150}
+temp	float	$tmp573.w	%read{1125,1150} %write{1125,1150}
+temp	float	$tmp574.x	%read{1125,1150} %write{1125,1150}
+temp	float	$tmp574.y	%read{1125,1150} %write{1125,1150}
+temp	float	$tmp574.z	%read{1125,1150} %write{1125,1150}
+temp	float	$tmp574.w	%read{1125,1150} %write{1125,1150}
+temp	point	$tmp575	%read{1125,1150} %write{1125,1150}
+temp	int	$tmp576	%read{1125,1150} %write{1125,1150}
+temp	float	$tmp577	%read{1125,1150} %write{1125,1150}
+temp	int	$tmp578	%read{2147483647,-1} %write{1125,1150}
+temp	float	$tmp579	%read{1152,1152} %write{1151,1151}
+temp	int	$tmp580	%read{1154,1154} %write{1153,1153}
+temp	float	$tmp581.x	%read{1166,1166} %write{1161,1161}
+temp	float	$tmp581.y	%read{1166,1166} %write{1162,1162}
+temp	float	$tmp581.z	%read{1166,1166} %write{1163,1163}
+temp	float	$tmp581.w	%read{1167,1167} %write{1164,1164}
+temp	float	$tmp582.x	%read{1161,1161} %write{1156,1156}
+temp	float	$tmp582.y	%read{1162,1162} %write{1157,1157}
+temp	float	$tmp582.z	%read{1163,1163} %write{1158,1158}
+temp	float	$tmp582.w	%read{1164,1164} %write{1159,1159}
+temp	point	$tmp583	%read{1167,1167} %write{1166,1166}
+temp	int	$tmp584	%read{1169,1169} %write{1168,1168}
+temp	float	$tmp585	%read{1174,1174} %write{1173,1173}
+temp	int	$tmp586	%read{1176,1176} %write{1175,1175}
+temp	float	$tmp587	%read{1181,1181} %write{1176,1176}
+temp	int	$tmp588	%read{1178,1178} %write{1177,1177}
+temp	int	$tmp589	%read{1179,1179} %write{1178,1178}
+temp	int	$tmp590	%read{1180,1180} %write{1179,1179}
+temp	float	$tmp591	%read{1181,1181} %write{1180,1180}
+temp	float	$tmp592	%read{1182,1182} %write{1181,1181}
+temp	int	$tmp593	%read{1184,1184} %write{1183,1183}
+temp	int	$tmp594	%read{1185,1185} %write{1184,1184}
+temp	float	$tmp595	%read{1190,1190} %write{1185,1185}
+temp	int	$tmp596	%read{1187,1187} %write{1186,1186}
+temp	int	$tmp597	%read{1188,1188} %write{1187,1187}
+temp	int	$tmp598	%read{1189,1189} %write{1188,1188}
+temp	float	$tmp599	%read{1190,1190} %write{1189,1189}
+temp	float	$tmp600	%read{1191,1191} %write{1190,1190}
+temp	float	$tmp601	%read{1193,1193} %write{1192,1192}
+temp	float	$tmp602	%read{1195,1195} %write{1193,1193}
+temp	float	$tmp603	%read{1195,1195} %write{1194,1194}
+temp	int	$tmp604	%read{1198,1198} %write{1197,1197}
+temp	float	$tmp605	%read{1203,1203} %write{1198,1198}
+temp	int	$tmp606	%read{1200,1200} %write{1199,1199}
+temp	int	$tmp607	%read{1201,1201} %write{1200,1200}
+temp	int	$tmp608	%read{1202,1202} %write{1201,1201}
+temp	float	$tmp609	%read{1203,1203} %write{1202,1202}
+temp	float	$tmp610	%read{1204,1204} %write{1203,1203}
+temp	float	$tmp611	%read{1317,1317} %write{1305,1315}
+temp	float	$tmp612.x	%read{1235,1271} %write{1221,1221}
+temp	float	$tmp612.y	%read{1235,1272} %write{1222,1222}
+temp	float	$tmp612.z	%read{1235,1273} %write{1223,1223}
+temp	float	$tmp612.w	%read{1235,1274} %write{1224,1224}
+temp	float	$tmp613.x	%read{1221,1221} %write{1210,1210}
+temp	float	$tmp613.y	%read{1222,1222} %write{1213,1213}
+temp	float	$tmp613.z	%read{1223,1223} %write{1216,1216}
+temp	float	$tmp613.w	%read{1224,1224} %write{1219,1219}
+const	float	$const30	5		%read{1208,1217} %write{2147483647,-1}
+temp	float	$tmp614	%read{1209,1209} %write{1208,1208}
+temp	float	$tmp615	%read{1210,1210} %write{1209,1209}
+temp	float	$tmp616	%read{1212,1212} %write{1211,1211}
+temp	float	$tmp617	%read{1213,1213} %write{1212,1212}
+temp	float	$tmp618	%read{1215,1215} %write{1214,1214}
+temp	float	$tmp619	%read{1216,1216} %write{1215,1215}
+temp	float	$tmp620	%read{1218,1218} %write{1217,1217}
+temp	float	$tmp621	%read{1219,1219} %write{1218,1218}
+temp	float	$tmp622	%read{1231,1231} %write{1230,1230}
+temp	int	$tmp623	%read{1235,1260} %write{1235,1260}
+temp	int	$tmp624	%read{1233,1260} %write{1234,1260}
+temp	float	$tmp625.x	%read{1235,1260} %write{1235,1260}
+temp	float	$tmp625.y	%read{1235,1260} %write{1235,1260}
+temp	float	$tmp625.z	%read{1235,1260} %write{1235,1260}
+temp	float	$tmp625.w	%read{1235,1260} %write{1235,1260}
+temp	float	$tmp626.x	%read{1235,1260} %write{1235,1260}
+temp	float	$tmp626.y	%read{1235,1260} %write{1235,1260}
+temp	float	$tmp626.z	%read{1235,1260} %write{1235,1260}
+temp	float	$tmp626.w	%read{1235,1260} %write{1235,1260}
+temp	point	$tmp627	%read{1235,1260} %write{1235,1260}
+temp	int	$tmp628	%read{1235,1260} %write{1235,1260}
+temp	float	$tmp629	%read{1235,1260} %write{1235,1260}
+temp	int	$tmp630	%read{2147483647,-1} %write{1235,1260}
+temp	float	$tmp631	%read{1262,1262} %write{1261,1261}
+temp	int	$tmp632	%read{1264,1264} %write{1263,1263}
+temp	float	$tmp633.x	%read{1276,1276} %write{1271,1271}
+temp	float	$tmp633.y	%read{1276,1276} %write{1272,1272}
+temp	float	$tmp633.z	%read{1276,1276} %write{1273,1273}
+temp	float	$tmp633.w	%read{1277,1277} %write{1274,1274}
+temp	float	$tmp634.x	%read{1271,1271} %write{1266,1266}
+temp	float	$tmp634.y	%read{1272,1272} %write{1267,1267}
+temp	float	$tmp634.z	%read{1273,1273} %write{1268,1268}
+temp	float	$tmp634.w	%read{1274,1274} %write{1269,1269}
+temp	point	$tmp635	%read{1277,1277} %write{1276,1276}
+temp	int	$tmp636	%read{1279,1279} %write{1278,1278}
+temp	float	$tmp637	%read{1284,1284} %write{1283,1283}
+temp	int	$tmp638	%read{1286,1286} %write{1285,1285}
+temp	float	$tmp639	%read{1291,1291} %write{1286,1286}
+temp	int	$tmp640	%read{1288,1288} %write{1287,1287}
+temp	int	$tmp641	%read{1289,1289} %write{1288,1288}
+temp	int	$tmp642	%read{1290,1290} %write{1289,1289}
+temp	float	$tmp643	%read{1291,1291} %write{1290,1290}
+temp	float	$tmp644	%read{1292,1292} %write{1291,1291}
+temp	int	$tmp645	%read{1294,1294} %write{1293,1293}
+temp	int	$tmp646	%read{1295,1295} %write{1294,1294}
+temp	float	$tmp647	%read{1300,1300} %write{1295,1295}
+temp	int	$tmp648	%read{1297,1297} %write{1296,1296}
+temp	int	$tmp649	%read{1298,1298} %write{1297,1297}
+temp	int	$tmp650	%read{1299,1299} %write{1298,1298}
+temp	float	$tmp651	%read{1300,1300} %write{1299,1299}
+temp	float	$tmp652	%read{1301,1301} %write{1300,1300}
+temp	float	$tmp653	%read{1303,1303} %write{1302,1302}
+temp	float	$tmp654	%read{1305,1305} %write{1303,1303}
+temp	float	$tmp655	%read{1305,1305} %write{1304,1304}
+temp	int	$tmp656	%read{1308,1308} %write{1307,1307}
+temp	float	$tmp657	%read{1313,1313} %write{1308,1308}
+temp	int	$tmp658	%read{1310,1310} %write{1309,1309}
+temp	int	$tmp659	%read{1311,1311} %write{1310,1310}
+temp	int	$tmp660	%read{1312,1312} %write{1311,1311}
+temp	float	$tmp661	%read{1313,1313} %write{1312,1312}
+temp	float	$tmp662	%read{1314,1314} %write{1313,1313}
+const	string	$const31	"Unknown dimension!"		%read{1319,1319} %write{2147483647,-1}
+code ___main___
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:131
+#   vector3 p = Vector;
+	assign		p Vector 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{131} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:132
+#   if (use_mapping)
+	if		use_mapping 3 3 	%line{132} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:133
+#     p = transform(mapping, p);
+	transform	p mapping p 	%line{133} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:135
+#   p *= Scale;
+	mul		p p Scale 	%line{135} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:136
+#   float w = W * Scale;
+	mul		w W Scale 	%line{136} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:138
+#   if (dimensions == "1D")
+	eq		$tmp1 dimensions $const1 	%line{138} %argrw{"wrr"}
+	if		$tmp1 253 1320 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:139
+#     Fac = noise_texture(w, Detail, Distortion, Color);
+	functioncall	$const2 253 	%line{139} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:60
+#   float p = co;
+	assign		___506_p w 	%line{60} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:61
+#   if (distortion != 0.0) {
+	neq		$tmp2 Distortion $const3 	%line{61} %argrw{"wrr"}
+	if		$tmp2 25 25 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:62
+#     p += safe_snoise(p + random_float_offset(0.0)) * distortion;
+	functioncall	$const4 15 	%line{62} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:34
+#   return 100.0 + noise("hash", seed) * 100.0;
+	noise		$tmp5 $const6 $const3 	%line{34} %argrw{"wrr"}
+	mul		$tmp6 $tmp5 $const5 	%argrw{"wrr"}
+	add		$tmp4 $const5 $tmp6 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:62
+#     p += safe_snoise(p + random_float_offset(0.0)) * distortion;
+	add		$tmp7 ___506_p $tmp4 	%line{62} %argrw{"wrr"}
+	functioncall	$const7 23 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:56
+#   float f = noise("snoise", p);
+	noise		___440_f $const8 $tmp7 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{56} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:57
+#   if (isinf(f))
+	isinf		$tmp8 ___440_f 	%line{57} %argrw{"wr"}
+	if		$tmp8 22 22 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:58
+#     return 0.0;
+	assign		$tmp3 $const3 	%line{58} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:59
+#   return f;
+	assign		$tmp3 ___440_f 	%line{59} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:62
+#     p += safe_snoise(p + random_float_offset(0.0)) * distortion;
+	mul		$tmp9 $tmp3 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{62} %argrw{"wrr"}
+	add		___506_p ___506_p $tmp9 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:65
+#   float value = fractal_noise(p, detail);
+	functioncall	$const9 97 	%line{65} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:89
+#   float fscale = 1.0;
+	assign		___444_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{89} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:90
+#   float amp = 1.0;
+	assign		___444_amp $const10 	%line{90} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:91
+#   float sum = 0.0;
+	assign		___444_sum $const3 	%line{91} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:92
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 32 	%line{92} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp10 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___444_octaves $tmp10 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:93
+#   int n = (int)octaves;
+	assign		___444_n ___444_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{93} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:94
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp12 35 37 49 51 	%line{94} %argrw{"r"}
+	assign		___445_i $const13 	%argrw{"wr"}
+	le		$tmp11 ___445_i ___444_n 	%argrw{"wrr"}
+	neq		$tmp12 $tmp11 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:95
+#     float t = safe_noise(fscale * p);
+	mul		$tmp13 ___444_fscale ___506_p 	%line{95} %argrw{"wrr"}
+	functioncall	$const14 45 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:24
+#   float f = noise("noise", p);
+	noise		___436_f $const15 $tmp13 	%line{24} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:25
+#   if (isinf(f))
+	isinf		$tmp14 ___436_f 	%line{25} %argrw{"wr"}
+	if		$tmp14 44 44 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:26
+#     return 0.5;
+	assign		___446_t $const16 	%line{26} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:27
+#   return f;
+	assign		___446_t ___436_f 	%line{27} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:96
+#     sum += t * amp;
+	mul		$tmp15 ___446_t ___444_amp 	%line{96} %argrw{"wrr"}
+	add		___444_sum ___444_sum $tmp15 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:97
+#     amp *= 0.5;
+	mul		___444_amp ___444_amp $const16 	%line{97} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:98
+#     fscale *= 2.0;
+	mul		___444_fscale ___444_fscale $const17 	%line{98} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:94
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp16 ___445_i 	%line{94} %argrw{"wr"}
+	add		___445_i ___445_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:100
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp17 ___444_octaves 	%line{100} %argrw{"wr"}
+	sub		___444_rmd ___444_octaves $tmp17 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:101
+#   if (rmd != 0.0) {
+	neq		$tmp18 ___444_rmd $const3 	%line{101} %argrw{"wrr"}
+	if		$tmp18 87 97 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:102
+#     float t = safe_noise(fscale * p);
+	mul		$tmp19 ___444_fscale ___506_p 	%line{102} %argrw{"wrr"}
+	functioncall	$const14 63 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:24
+#   float f = noise("noise", p);
+	noise		___436_f $const15 $tmp19 	%line{24} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:25
+#   if (isinf(f))
+	isinf		$tmp20 ___436_f 	%line{25} %argrw{"wr"}
+	if		$tmp20 62 62 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:26
+#     return 0.5;
+	assign		___447_t $const16 	%line{26} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:27
+#   return f;
+	assign		___447_t ___436_f 	%line{27} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:103
+#     float sum2 = sum + t * amp;
+	mul		$tmp21 ___447_t ___444_amp 	%line{103} %argrw{"wrr"}
+	add		___447_sum2 ___444_sum $tmp21 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:104
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp22 $const18 ___444_n 	%line{104} %argrw{"wrr"}
+	assign		$tmp23 $tmp22 	%argrw{"wr"}
+	add		$tmp24 ___444_n $const18 	%argrw{"wrr"}
+	shl		$tmp25 $const18 $tmp24 	%argrw{"wrr"}
+	sub		$tmp26 $tmp25 $const18 	%argrw{"wrr"}
+	assign		$tmp27 $tmp26 	%argrw{"wr"}
+	div		$tmp28 $tmp23 $tmp27 	%argrw{"wrr"}
+	mul		___444_sum ___444_sum $tmp28 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:105
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp29 ___444_n $const18 	%line{105} %argrw{"wrr"}
+	shl		$tmp30 $const18 $tmp29 	%argrw{"wrr"}
+	assign		$tmp31 $tmp30 	%argrw{"wr"}
+	add		$tmp32 ___444_n $const19 	%argrw{"wrr"}
+	shl		$tmp33 $const18 $tmp32 	%argrw{"wrr"}
+	sub		$tmp34 $tmp33 $const18 	%argrw{"wrr"}
+	assign		$tmp35 $tmp34 	%argrw{"wr"}
+	div		$tmp36 $tmp31 $tmp35 	%argrw{"wrr"}
+	mul		___447_sum2 ___447_sum2 $tmp36 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:106
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp37 $const10 ___444_rmd 	%line{106} %argrw{"wrr"}
+	mul		$tmp38 $tmp37 ___444_sum 	%argrw{"wrr"}
+	mul		$tmp39 ___444_rmd ___447_sum2 	%argrw{"wrr"}
+	add		___506_value $tmp38 $tmp39 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:109
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp40 $const18 ___444_n 	%line{109} %argrw{"wrr"}
+	assign		$tmp41 $tmp40 	%argrw{"wr"}
+	add		$tmp42 ___444_n $const18 	%argrw{"wrr"}
+	shl		$tmp43 $const18 $tmp42 	%argrw{"wrr"}
+	sub		$tmp44 $tmp43 $const18 	%argrw{"wrr"}
+	assign		$tmp45 $tmp44 	%argrw{"wr"}
+	div		$tmp46 $tmp41 $tmp45 	%argrw{"wrr"}
+	mul		___444_sum ___444_sum $tmp46 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:110
+#     return sum;
+	assign		___506_value ___444_sum 	%line{110} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:67
+#                 fractal_noise(p + random_float_offset(1.0), detail),
+	functioncall	$const4 101 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{67} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:34
+#   return 100.0 + noise("hash", seed) * 100.0;
+	noise		$tmp49 $const6 $const10 	%line{34} %argrw{"wrr"}
+	mul		$tmp50 $tmp49 $const5 	%argrw{"wrr"}
+	add		$tmp48 $const5 $tmp50 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:67
+#                 fractal_noise(p + random_float_offset(1.0), detail),
+	add		$tmp51 ___506_p $tmp48 	%line{67} %argrw{"wrr"}
+	functioncall	$const9 174 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:89
+#   float fscale = 1.0;
+	assign		___444_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{89} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:90
+#   float amp = 1.0;
+	assign		___444_amp $const10 	%line{90} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:91
+#   float sum = 0.0;
+	assign		___444_sum $const3 	%line{91} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:92
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 109 	%line{92} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp52 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___444_octaves $tmp52 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:93
+#   int n = (int)octaves;
+	assign		___444_n ___444_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{93} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:94
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp54 112 114 126 128 	%line{94} %argrw{"r"}
+	assign		___445_i $const13 	%argrw{"wr"}
+	le		$tmp53 ___445_i ___444_n 	%argrw{"wrr"}
+	neq		$tmp54 $tmp53 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:95
+#     float t = safe_noise(fscale * p);
+	mul		$tmp55 ___444_fscale $tmp51 	%line{95} %argrw{"wrr"}
+	functioncall	$const14 122 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:24
+#   float f = noise("noise", p);
+	noise		___436_f $const15 $tmp55 	%line{24} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:25
+#   if (isinf(f))
+	isinf		$tmp56 ___436_f 	%line{25} %argrw{"wr"}
+	if		$tmp56 121 121 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:26
+#     return 0.5;
+	assign		___446_t $const16 	%line{26} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:27
+#   return f;
+	assign		___446_t ___436_f 	%line{27} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:96
+#     sum += t * amp;
+	mul		$tmp57 ___446_t ___444_amp 	%line{96} %argrw{"wrr"}
+	add		___444_sum ___444_sum $tmp57 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:97
+#     amp *= 0.5;
+	mul		___444_amp ___444_amp $const16 	%line{97} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:98
+#     fscale *= 2.0;
+	mul		___444_fscale ___444_fscale $const17 	%line{98} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:94
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp58 ___445_i 	%line{94} %argrw{"wr"}
+	add		___445_i ___445_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:100
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp59 ___444_octaves 	%line{100} %argrw{"wr"}
+	sub		___444_rmd ___444_octaves $tmp59 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:101
+#   if (rmd != 0.0) {
+	neq		$tmp60 ___444_rmd $const3 	%line{101} %argrw{"wrr"}
+	if		$tmp60 164 174 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:102
+#     float t = safe_noise(fscale * p);
+	mul		$tmp61 ___444_fscale $tmp51 	%line{102} %argrw{"wrr"}
+	functioncall	$const14 140 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:24
+#   float f = noise("noise", p);
+	noise		___436_f $const15 $tmp61 	%line{24} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:25
+#   if (isinf(f))
+	isinf		$tmp62 ___436_f 	%line{25} %argrw{"wr"}
+	if		$tmp62 139 139 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:26
+#     return 0.5;
+	assign		___447_t $const16 	%line{26} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:27
+#   return f;
+	assign		___447_t ___436_f 	%line{27} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:103
+#     float sum2 = sum + t * amp;
+	mul		$tmp63 ___447_t ___444_amp 	%line{103} %argrw{"wrr"}
+	add		___447_sum2 ___444_sum $tmp63 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:104
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp64 $const18 ___444_n 	%line{104} %argrw{"wrr"}
+	assign		$tmp65 $tmp64 	%argrw{"wr"}
+	add		$tmp66 ___444_n $const18 	%argrw{"wrr"}
+	shl		$tmp67 $const18 $tmp66 	%argrw{"wrr"}
+	sub		$tmp68 $tmp67 $const18 	%argrw{"wrr"}
+	assign		$tmp69 $tmp68 	%argrw{"wr"}
+	div		$tmp70 $tmp65 $tmp69 	%argrw{"wrr"}
+	mul		___444_sum ___444_sum $tmp70 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:105
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp71 ___444_n $const18 	%line{105} %argrw{"wrr"}
+	shl		$tmp72 $const18 $tmp71 	%argrw{"wrr"}
+	assign		$tmp73 $tmp72 	%argrw{"wr"}
+	add		$tmp74 ___444_n $const19 	%argrw{"wrr"}
+	shl		$tmp75 $const18 $tmp74 	%argrw{"wrr"}
+	sub		$tmp76 $tmp75 $const18 	%argrw{"wrr"}
+	assign		$tmp77 $tmp76 	%argrw{"wr"}
+	div		$tmp78 $tmp73 $tmp77 	%argrw{"wrr"}
+	mul		___447_sum2 ___447_sum2 $tmp78 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:106
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp79 $const10 ___444_rmd 	%line{106} %argrw{"wrr"}
+	mul		$tmp80 $tmp79 ___444_sum 	%argrw{"wrr"}
+	mul		$tmp81 ___444_rmd ___447_sum2 	%argrw{"wrr"}
+	add		$tmp47 $tmp80 $tmp81 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:109
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp82 $const18 ___444_n 	%line{109} %argrw{"wrr"}
+	assign		$tmp83 $tmp82 	%argrw{"wr"}
+	add		$tmp84 ___444_n $const18 	%argrw{"wrr"}
+	shl		$tmp85 $const18 $tmp84 	%argrw{"wrr"}
+	sub		$tmp86 $tmp85 $const18 	%argrw{"wrr"}
+	assign		$tmp87 $tmp86 	%argrw{"wr"}
+	div		$tmp88 $tmp83 $tmp87 	%argrw{"wrr"}
+	mul		___444_sum ___444_sum $tmp88 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:110
+#     return sum;
+	assign		$tmp47 ___444_sum 	%line{110} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:68
+#                 fractal_noise(p + random_float_offset(2.0), detail));
+	functioncall	$const4 178 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{68} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:34
+#   return 100.0 + noise("hash", seed) * 100.0;
+	noise		$tmp91 $const6 $const17 	%line{34} %argrw{"wrr"}
+	mul		$tmp92 $tmp91 $const5 	%argrw{"wrr"}
+	add		$tmp90 $const5 $tmp92 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:68
+#                 fractal_noise(p + random_float_offset(2.0), detail));
+	add		$tmp93 ___506_p $tmp90 	%line{68} %argrw{"wrr"}
+	functioncall	$const9 251 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:89
+#   float fscale = 1.0;
+	assign		___444_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{89} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:90
+#   float amp = 1.0;
+	assign		___444_amp $const10 	%line{90} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:91
+#   float sum = 0.0;
+	assign		___444_sum $const3 	%line{91} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:92
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 186 	%line{92} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp94 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___444_octaves $tmp94 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:93
+#   int n = (int)octaves;
+	assign		___444_n ___444_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{93} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:94
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp96 189 191 203 205 	%line{94} %argrw{"r"}
+	assign		___445_i $const13 	%argrw{"wr"}
+	le		$tmp95 ___445_i ___444_n 	%argrw{"wrr"}
+	neq		$tmp96 $tmp95 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:95
+#     float t = safe_noise(fscale * p);
+	mul		$tmp97 ___444_fscale $tmp93 	%line{95} %argrw{"wrr"}
+	functioncall	$const14 199 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:24
+#   float f = noise("noise", p);
+	noise		___436_f $const15 $tmp97 	%line{24} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:25
+#   if (isinf(f))
+	isinf		$tmp98 ___436_f 	%line{25} %argrw{"wr"}
+	if		$tmp98 198 198 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:26
+#     return 0.5;
+	assign		___446_t $const16 	%line{26} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:27
+#   return f;
+	assign		___446_t ___436_f 	%line{27} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:96
+#     sum += t * amp;
+	mul		$tmp99 ___446_t ___444_amp 	%line{96} %argrw{"wrr"}
+	add		___444_sum ___444_sum $tmp99 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:97
+#     amp *= 0.5;
+	mul		___444_amp ___444_amp $const16 	%line{97} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:98
+#     fscale *= 2.0;
+	mul		___444_fscale ___444_fscale $const17 	%line{98} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:94
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp100 ___445_i 	%line{94} %argrw{"wr"}
+	add		___445_i ___445_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:100
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp101 ___444_octaves 	%line{100} %argrw{"wr"}
+	sub		___444_rmd ___444_octaves $tmp101 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:101
+#   if (rmd != 0.0) {
+	neq		$tmp102 ___444_rmd $const3 	%line{101} %argrw{"wrr"}
+	if		$tmp102 241 251 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:102
+#     float t = safe_noise(fscale * p);
+	mul		$tmp103 ___444_fscale $tmp93 	%line{102} %argrw{"wrr"}
+	functioncall	$const14 217 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:24
+#   float f = noise("noise", p);
+	noise		___436_f $const15 $tmp103 	%line{24} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:25
+#   if (isinf(f))
+	isinf		$tmp104 ___436_f 	%line{25} %argrw{"wr"}
+	if		$tmp104 216 216 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:26
+#     return 0.5;
+	assign		___447_t $const16 	%line{26} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:27
+#   return f;
+	assign		___447_t ___436_f 	%line{27} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:103
+#     float sum2 = sum + t * amp;
+	mul		$tmp105 ___447_t ___444_amp 	%line{103} %argrw{"wrr"}
+	add		___447_sum2 ___444_sum $tmp105 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:104
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp106 $const18 ___444_n 	%line{104} %argrw{"wrr"}
+	assign		$tmp107 $tmp106 	%argrw{"wr"}
+	add		$tmp108 ___444_n $const18 	%argrw{"wrr"}
+	shl		$tmp109 $const18 $tmp108 	%argrw{"wrr"}
+	sub		$tmp110 $tmp109 $const18 	%argrw{"wrr"}
+	assign		$tmp111 $tmp110 	%argrw{"wr"}
+	div		$tmp112 $tmp107 $tmp111 	%argrw{"wrr"}
+	mul		___444_sum ___444_sum $tmp112 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:105
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp113 ___444_n $const18 	%line{105} %argrw{"wrr"}
+	shl		$tmp114 $const18 $tmp113 	%argrw{"wrr"}
+	assign		$tmp115 $tmp114 	%argrw{"wr"}
+	add		$tmp116 ___444_n $const19 	%argrw{"wrr"}
+	shl		$tmp117 $const18 $tmp116 	%argrw{"wrr"}
+	sub		$tmp118 $tmp117 $const18 	%argrw{"wrr"}
+	assign		$tmp119 $tmp118 	%argrw{"wr"}
+	div		$tmp120 $tmp115 $tmp119 	%argrw{"wrr"}
+	mul		___447_sum2 ___447_sum2 $tmp120 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:106
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp121 $const10 ___444_rmd 	%line{106} %argrw{"wrr"}
+	mul		$tmp122 $tmp121 ___444_sum 	%argrw{"wrr"}
+	mul		$tmp123 ___444_rmd ___447_sum2 	%argrw{"wrr"}
+	add		$tmp89 $tmp122 $tmp123 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:109
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp124 $const18 ___444_n 	%line{109} %argrw{"wrr"}
+	assign		$tmp125 $tmp124 	%argrw{"wr"}
+	add		$tmp126 ___444_n $const18 	%argrw{"wrr"}
+	shl		$tmp127 $const18 $tmp126 	%argrw{"wrr"}
+	sub		$tmp128 $tmp127 $const18 	%argrw{"wrr"}
+	assign		$tmp129 $tmp128 	%argrw{"wr"}
+	div		$tmp130 $tmp125 $tmp129 	%argrw{"wrr"}
+	mul		___444_sum ___444_sum $tmp130 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:110
+#     return sum;
+	assign		$tmp89 ___444_sum 	%line{110} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:66
+#   Color = color(value,
+	color		Color ___506_value $tmp47 $tmp89 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{66} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:69
+#   return value;
+	assign		Fac ___506_value 	%line{69} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:140
+#   else if (dimensions == "2D")
+	eq		$tmp131 dimensions $const20 	%line{140} %argrw{"wrr"}
+	if		$tmp131 569 1320 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:141
+#     Fac = noise_texture(vector2(p[0], p[1]), Detail, Distortion, Color);
+	compref		$tmp132.x p $const13 	%line{141} %argrw{"wrr"}
+	compref		$tmp132.y p $const18 	%argrw{"wrr"}
+	functioncall	$const2 569 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:74
+#   vector2 p = co;
+	assign		___508_p.x $tmp132.x 	%line{74} %argrw{"wr"}
+	assign		___508_p.y $tmp132.y 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:75
+#   if (distortion != 0.0) {
+	neq		$tmp133 Distortion $const3 	%line{75} %argrw{"wrr"}
+	if		$tmp133 301 301 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:76
+#     p += vector2(safe_snoise(p + random_vector2_offset(0.0)) * distortion,
+	functioncall	$const21 269 	%line{76} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:39
+#   return vector2(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp138 $const6 $const3 $const3 	%line{39} %argrw{"wrrr"}
+	mul		$tmp139 $tmp138 $const5 	%argrw{"wrr"}
+	add		$tmp137.x $const5 $tmp139 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:40
+#                  100.0 + noise("hash", seed, 1.0) * 100.0);
+	noise		$tmp140 $const6 $const3 $const10 	%line{40} %argrw{"wrrr"}
+	mul		$tmp141 $tmp140 $const5 	%argrw{"wrr"}
+	add		$tmp137.y $const5 $tmp141 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 272 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:27
+#     return vector2(a.x + b.x, a.y + b.y);
+	add		$tmp136.x ___508_p.x $tmp137.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{27} %argrw{"wrr"}
+	add		$tmp136.y ___508_p.y $tmp137.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:76
+#     p += vector2(safe_snoise(p + random_vector2_offset(0.0)) * distortion,
+	functioncall	$const7 279 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{76} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:64
+#   float f = noise("snoise", p.x, p.y);
+	noise		___441_f $const8 $tmp136.x $tmp136.y 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{64} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:65
+#   if (isinf(f))
+	isinf		$tmp142 ___441_f 	%line{65} %argrw{"wr"}
+	if		$tmp142 278 278 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:66
+#     return 0.0;
+	assign		$tmp135 $const3 	%line{66} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:67
+#   return f;
+	assign		$tmp135 ___441_f 	%line{67} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:76
+#     p += vector2(safe_snoise(p + random_vector2_offset(0.0)) * distortion,
+	mul		$tmp134.x $tmp135 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{76} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:77
+#                  safe_snoise(p + random_vector2_offset(1.0)) * distortion);
+	functioncall	$const21 287 	%line{77} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:39
+#   return vector2(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp146 $const6 $const10 $const3 	%line{39} %argrw{"wrrr"}
+	mul		$tmp147 $tmp146 $const5 	%argrw{"wrr"}
+	add		$tmp145.x $const5 $tmp147 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:40
+#                  100.0 + noise("hash", seed, 1.0) * 100.0);
+	noise		$tmp148 $const6 $const10 $const10 	%line{40} %argrw{"wrrr"}
+	mul		$tmp149 $tmp148 $const5 	%argrw{"wrr"}
+	add		$tmp145.y $const5 $tmp149 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 290 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:27
+#     return vector2(a.x + b.x, a.y + b.y);
+	add		$tmp144.x ___508_p.x $tmp145.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{27} %argrw{"wrr"}
+	add		$tmp144.y ___508_p.y $tmp145.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:77
+#                  safe_snoise(p + random_vector2_offset(1.0)) * distortion);
+	functioncall	$const7 297 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{77} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:64
+#   float f = noise("snoise", p.x, p.y);
+	noise		___441_f $const8 $tmp144.x $tmp144.y 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{64} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:65
+#   if (isinf(f))
+	isinf		$tmp150 ___441_f 	%line{65} %argrw{"wr"}
+	if		$tmp150 296 296 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:66
+#     return 0.0;
+	assign		$tmp143 $const3 	%line{66} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:67
+#   return f;
+	assign		$tmp143 ___441_f 	%line{67} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:77
+#                  safe_snoise(p + random_vector2_offset(1.0)) * distortion);
+	mul		$tmp134.y $tmp143 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{77} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 301 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:27
+#     return vector2(a.x + b.x, a.y + b.y);
+	add		___508_p.x ___508_p.x $tmp134.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{27} %argrw{"wrr"}
+	add		___508_p.y ___508_p.y $tmp134.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:80
+#   float value = fractal_noise(p, detail);
+	functioncall	$const9 383 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{80} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:117
+#   float fscale = 1.0;
+	assign		___449_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{117} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:118
+#   float amp = 1.0;
+	assign		___449_amp $const10 	%line{118} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:119
+#   float sum = 0.0;
+	assign		___449_sum $const3 	%line{119} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:120
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 308 	%line{120} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp151 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___449_octaves $tmp151 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:121
+#   int n = (int)octaves;
+	assign		___449_n ___449_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{121} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:122
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp153 311 313 330 332 	%line{122} %argrw{"r"}
+	assign		___450_i $const13 	%argrw{"wr"}
+	le		$tmp152 ___450_i ___449_n 	%argrw{"wrr"}
+	neq		$tmp153 $tmp152 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 319 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:97
+#     return b * vector2(a, a);
+	assign		$tmp155.x ___449_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{97} %argrw{"wr"}
+	assign		$tmp155.y ___449_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 319 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:77
+#     return vector2(a.x * b.x, a.y * b.y);
+	mul		$tmp154.x ___508_p.x $tmp155.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{77} %argrw{"wrr"}
+	mul		$tmp154.y ___508_p.y $tmp155.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:123
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 326 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{123} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:32
+#   float f = noise("noise", p.x, p.y);
+	noise		___437_f $const15 $tmp154.x $tmp154.y 	%line{32} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:33
+#   if (isinf(f))
+	isinf		$tmp156 ___437_f 	%line{33} %argrw{"wr"}
+	if		$tmp156 325 325 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:34
+#     return 0.5;
+	assign		___451_t $const16 	%line{34} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:35
+#   return f;
+	assign		___451_t ___437_f 	%line{35} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:124
+#     sum += t * amp;
+	mul		$tmp157 ___451_t ___449_amp 	%line{124} %argrw{"wrr"}
+	add		___449_sum ___449_sum $tmp157 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:125
+#     amp *= 0.5;
+	mul		___449_amp ___449_amp $const16 	%line{125} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:126
+#     fscale *= 2.0;
+	mul		___449_fscale ___449_fscale $const17 	%line{126} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:122
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp158 ___450_i 	%line{122} %argrw{"wr"}
+	add		___450_i ___450_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:128
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp159 ___449_octaves 	%line{128} %argrw{"wr"}
+	sub		___449_rmd ___449_octaves $tmp159 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:129
+#   if (rmd != 0.0) {
+	neq		$tmp160 ___449_rmd $const3 	%line{129} %argrw{"wrr"}
+	if		$tmp160 373 383 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 342 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:97
+#     return b * vector2(a, a);
+	assign		$tmp162.x ___449_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{97} %argrw{"wr"}
+	assign		$tmp162.y ___449_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 342 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:77
+#     return vector2(a.x * b.x, a.y * b.y);
+	mul		$tmp161.x ___508_p.x $tmp162.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{77} %argrw{"wrr"}
+	mul		$tmp161.y ___508_p.y $tmp162.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:130
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 349 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{130} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:32
+#   float f = noise("noise", p.x, p.y);
+	noise		___437_f $const15 $tmp161.x $tmp161.y 	%line{32} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:33
+#   if (isinf(f))
+	isinf		$tmp163 ___437_f 	%line{33} %argrw{"wr"}
+	if		$tmp163 348 348 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:34
+#     return 0.5;
+	assign		___452_t $const16 	%line{34} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:35
+#   return f;
+	assign		___452_t ___437_f 	%line{35} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:131
+#     float sum2 = sum + t * amp;
+	mul		$tmp164 ___452_t ___449_amp 	%line{131} %argrw{"wrr"}
+	add		___452_sum2 ___449_sum $tmp164 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:132
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp165 $const18 ___449_n 	%line{132} %argrw{"wrr"}
+	assign		$tmp166 $tmp165 	%argrw{"wr"}
+	add		$tmp167 ___449_n $const18 	%argrw{"wrr"}
+	shl		$tmp168 $const18 $tmp167 	%argrw{"wrr"}
+	sub		$tmp169 $tmp168 $const18 	%argrw{"wrr"}
+	assign		$tmp170 $tmp169 	%argrw{"wr"}
+	div		$tmp171 $tmp166 $tmp170 	%argrw{"wrr"}
+	mul		___449_sum ___449_sum $tmp171 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:133
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp172 ___449_n $const18 	%line{133} %argrw{"wrr"}
+	shl		$tmp173 $const18 $tmp172 	%argrw{"wrr"}
+	assign		$tmp174 $tmp173 	%argrw{"wr"}
+	add		$tmp175 ___449_n $const19 	%argrw{"wrr"}
+	shl		$tmp176 $const18 $tmp175 	%argrw{"wrr"}
+	sub		$tmp177 $tmp176 $const18 	%argrw{"wrr"}
+	assign		$tmp178 $tmp177 	%argrw{"wr"}
+	div		$tmp179 $tmp174 $tmp178 	%argrw{"wrr"}
+	mul		___452_sum2 ___452_sum2 $tmp179 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:134
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp180 $const10 ___449_rmd 	%line{134} %argrw{"wrr"}
+	mul		$tmp181 $tmp180 ___449_sum 	%argrw{"wrr"}
+	mul		$tmp182 ___449_rmd ___452_sum2 	%argrw{"wrr"}
+	add		___508_value $tmp181 $tmp182 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:137
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp183 $const18 ___449_n 	%line{137} %argrw{"wrr"}
+	assign		$tmp184 $tmp183 	%argrw{"wr"}
+	add		$tmp185 ___449_n $const18 	%argrw{"wrr"}
+	shl		$tmp186 $const18 $tmp185 	%argrw{"wrr"}
+	sub		$tmp187 $tmp186 $const18 	%argrw{"wrr"}
+	assign		$tmp188 $tmp187 	%argrw{"wr"}
+	div		$tmp189 $tmp184 $tmp188 	%argrw{"wrr"}
+	mul		___449_sum ___449_sum $tmp189 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:138
+#     return sum;
+	assign		___508_value ___449_sum 	%line{138} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:82
+#                 fractal_noise(p + random_vector2_offset(2.0), detail),
+	functioncall	$const21 390 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{82} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:39
+#   return vector2(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp193 $const6 $const17 $const3 	%line{39} %argrw{"wrrr"}
+	mul		$tmp194 $tmp193 $const5 	%argrw{"wrr"}
+	add		$tmp192.x $const5 $tmp194 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:40
+#                  100.0 + noise("hash", seed, 1.0) * 100.0);
+	noise		$tmp195 $const6 $const17 $const10 	%line{40} %argrw{"wrrr"}
+	mul		$tmp196 $tmp195 $const5 	%argrw{"wrr"}
+	add		$tmp192.y $const5 $tmp196 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 393 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:27
+#     return vector2(a.x + b.x, a.y + b.y);
+	add		$tmp191.x ___508_p.x $tmp192.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{27} %argrw{"wrr"}
+	add		$tmp191.y ___508_p.y $tmp192.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:82
+#                 fractal_noise(p + random_vector2_offset(2.0), detail),
+	functioncall	$const9 475 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{82} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:117
+#   float fscale = 1.0;
+	assign		___449_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{117} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:118
+#   float amp = 1.0;
+	assign		___449_amp $const10 	%line{118} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:119
+#   float sum = 0.0;
+	assign		___449_sum $const3 	%line{119} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:120
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 400 	%line{120} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp197 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___449_octaves $tmp197 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:121
+#   int n = (int)octaves;
+	assign		___449_n ___449_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{121} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:122
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp199 403 405 422 424 	%line{122} %argrw{"r"}
+	assign		___450_i $const13 	%argrw{"wr"}
+	le		$tmp198 ___450_i ___449_n 	%argrw{"wrr"}
+	neq		$tmp199 $tmp198 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 411 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:97
+#     return b * vector2(a, a);
+	assign		$tmp201.x ___449_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{97} %argrw{"wr"}
+	assign		$tmp201.y ___449_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 411 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:77
+#     return vector2(a.x * b.x, a.y * b.y);
+	mul		$tmp200.x $tmp191.x $tmp201.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{77} %argrw{"wrr"}
+	mul		$tmp200.y $tmp191.y $tmp201.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:123
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 418 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{123} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:32
+#   float f = noise("noise", p.x, p.y);
+	noise		___437_f $const15 $tmp200.x $tmp200.y 	%line{32} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:33
+#   if (isinf(f))
+	isinf		$tmp202 ___437_f 	%line{33} %argrw{"wr"}
+	if		$tmp202 417 417 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:34
+#     return 0.5;
+	assign		___451_t $const16 	%line{34} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:35
+#   return f;
+	assign		___451_t ___437_f 	%line{35} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:124
+#     sum += t * amp;
+	mul		$tmp203 ___451_t ___449_amp 	%line{124} %argrw{"wrr"}
+	add		___449_sum ___449_sum $tmp203 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:125
+#     amp *= 0.5;
+	mul		___449_amp ___449_amp $const16 	%line{125} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:126
+#     fscale *= 2.0;
+	mul		___449_fscale ___449_fscale $const17 	%line{126} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:122
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp204 ___450_i 	%line{122} %argrw{"wr"}
+	add		___450_i ___450_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:128
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp205 ___449_octaves 	%line{128} %argrw{"wr"}
+	sub		___449_rmd ___449_octaves $tmp205 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:129
+#   if (rmd != 0.0) {
+	neq		$tmp206 ___449_rmd $const3 	%line{129} %argrw{"wrr"}
+	if		$tmp206 465 475 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 434 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:97
+#     return b * vector2(a, a);
+	assign		$tmp208.x ___449_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{97} %argrw{"wr"}
+	assign		$tmp208.y ___449_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 434 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:77
+#     return vector2(a.x * b.x, a.y * b.y);
+	mul		$tmp207.x $tmp191.x $tmp208.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{77} %argrw{"wrr"}
+	mul		$tmp207.y $tmp191.y $tmp208.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:130
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 441 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{130} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:32
+#   float f = noise("noise", p.x, p.y);
+	noise		___437_f $const15 $tmp207.x $tmp207.y 	%line{32} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:33
+#   if (isinf(f))
+	isinf		$tmp209 ___437_f 	%line{33} %argrw{"wr"}
+	if		$tmp209 440 440 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:34
+#     return 0.5;
+	assign		___452_t $const16 	%line{34} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:35
+#   return f;
+	assign		___452_t ___437_f 	%line{35} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:131
+#     float sum2 = sum + t * amp;
+	mul		$tmp210 ___452_t ___449_amp 	%line{131} %argrw{"wrr"}
+	add		___452_sum2 ___449_sum $tmp210 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:132
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp211 $const18 ___449_n 	%line{132} %argrw{"wrr"}
+	assign		$tmp212 $tmp211 	%argrw{"wr"}
+	add		$tmp213 ___449_n $const18 	%argrw{"wrr"}
+	shl		$tmp214 $const18 $tmp213 	%argrw{"wrr"}
+	sub		$tmp215 $tmp214 $const18 	%argrw{"wrr"}
+	assign		$tmp216 $tmp215 	%argrw{"wr"}
+	div		$tmp217 $tmp212 $tmp216 	%argrw{"wrr"}
+	mul		___449_sum ___449_sum $tmp217 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:133
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp218 ___449_n $const18 	%line{133} %argrw{"wrr"}
+	shl		$tmp219 $const18 $tmp218 	%argrw{"wrr"}
+	assign		$tmp220 $tmp219 	%argrw{"wr"}
+	add		$tmp221 ___449_n $const19 	%argrw{"wrr"}
+	shl		$tmp222 $const18 $tmp221 	%argrw{"wrr"}
+	sub		$tmp223 $tmp222 $const18 	%argrw{"wrr"}
+	assign		$tmp224 $tmp223 	%argrw{"wr"}
+	div		$tmp225 $tmp220 $tmp224 	%argrw{"wrr"}
+	mul		___452_sum2 ___452_sum2 $tmp225 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:134
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp226 $const10 ___449_rmd 	%line{134} %argrw{"wrr"}
+	mul		$tmp227 $tmp226 ___449_sum 	%argrw{"wrr"}
+	mul		$tmp228 ___449_rmd ___452_sum2 	%argrw{"wrr"}
+	add		$tmp190 $tmp227 $tmp228 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:137
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp229 $const18 ___449_n 	%line{137} %argrw{"wrr"}
+	assign		$tmp230 $tmp229 	%argrw{"wr"}
+	add		$tmp231 ___449_n $const18 	%argrw{"wrr"}
+	shl		$tmp232 $const18 $tmp231 	%argrw{"wrr"}
+	sub		$tmp233 $tmp232 $const18 	%argrw{"wrr"}
+	assign		$tmp234 $tmp233 	%argrw{"wr"}
+	div		$tmp235 $tmp230 $tmp234 	%argrw{"wrr"}
+	mul		___449_sum ___449_sum $tmp235 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:138
+#     return sum;
+	assign		$tmp190 ___449_sum 	%line{138} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:83
+#                 fractal_noise(p + random_vector2_offset(3.0), detail));
+	functioncall	$const21 482 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{83} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:39
+#   return vector2(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp239 $const6 $const24 $const3 	%line{39} %argrw{"wrrr"}
+	mul		$tmp240 $tmp239 $const5 	%argrw{"wrr"}
+	add		$tmp238.x $const5 $tmp240 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:40
+#                  100.0 + noise("hash", seed, 1.0) * 100.0);
+	noise		$tmp241 $const6 $const24 $const10 	%line{40} %argrw{"wrrr"}
+	mul		$tmp242 $tmp241 $const5 	%argrw{"wrr"}
+	add		$tmp238.y $const5 $tmp242 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 485 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:27
+#     return vector2(a.x + b.x, a.y + b.y);
+	add		$tmp237.x ___508_p.x $tmp238.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{27} %argrw{"wrr"}
+	add		$tmp237.y ___508_p.y $tmp238.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:83
+#                 fractal_noise(p + random_vector2_offset(3.0), detail));
+	functioncall	$const9 567 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{83} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:117
+#   float fscale = 1.0;
+	assign		___449_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{117} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:118
+#   float amp = 1.0;
+	assign		___449_amp $const10 	%line{118} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:119
+#   float sum = 0.0;
+	assign		___449_sum $const3 	%line{119} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:120
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 492 	%line{120} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp243 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___449_octaves $tmp243 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:121
+#   int n = (int)octaves;
+	assign		___449_n ___449_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{121} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:122
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp245 495 497 514 516 	%line{122} %argrw{"r"}
+	assign		___450_i $const13 	%argrw{"wr"}
+	le		$tmp244 ___450_i ___449_n 	%argrw{"wrr"}
+	neq		$tmp245 $tmp244 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 503 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:97
+#     return b * vector2(a, a);
+	assign		$tmp247.x ___449_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{97} %argrw{"wr"}
+	assign		$tmp247.y ___449_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 503 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:77
+#     return vector2(a.x * b.x, a.y * b.y);
+	mul		$tmp246.x $tmp237.x $tmp247.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{77} %argrw{"wrr"}
+	mul		$tmp246.y $tmp237.y $tmp247.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:123
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 510 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{123} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:32
+#   float f = noise("noise", p.x, p.y);
+	noise		___437_f $const15 $tmp246.x $tmp246.y 	%line{32} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:33
+#   if (isinf(f))
+	isinf		$tmp248 ___437_f 	%line{33} %argrw{"wr"}
+	if		$tmp248 509 509 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:34
+#     return 0.5;
+	assign		___451_t $const16 	%line{34} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:35
+#   return f;
+	assign		___451_t ___437_f 	%line{35} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:124
+#     sum += t * amp;
+	mul		$tmp249 ___451_t ___449_amp 	%line{124} %argrw{"wrr"}
+	add		___449_sum ___449_sum $tmp249 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:125
+#     amp *= 0.5;
+	mul		___449_amp ___449_amp $const16 	%line{125} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:126
+#     fscale *= 2.0;
+	mul		___449_fscale ___449_fscale $const17 	%line{126} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:122
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp250 ___450_i 	%line{122} %argrw{"wr"}
+	add		___450_i ___450_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:128
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp251 ___449_octaves 	%line{128} %argrw{"wr"}
+	sub		___449_rmd ___449_octaves $tmp251 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:129
+#   if (rmd != 0.0) {
+	neq		$tmp252 ___449_rmd $const3 	%line{129} %argrw{"wrr"}
+	if		$tmp252 557 567 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 526 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:97
+#     return b * vector2(a, a);
+	assign		$tmp254.x ___449_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{97} %argrw{"wr"}
+	assign		$tmp254.y ___449_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 526 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector2.h:77
+#     return vector2(a.x * b.x, a.y * b.y);
+	mul		$tmp253.x $tmp237.x $tmp254.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector2.h"} %line{77} %argrw{"wrr"}
+	mul		$tmp253.y $tmp237.y $tmp254.y 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:130
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 533 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{130} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:32
+#   float f = noise("noise", p.x, p.y);
+	noise		___437_f $const15 $tmp253.x $tmp253.y 	%line{32} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:33
+#   if (isinf(f))
+	isinf		$tmp255 ___437_f 	%line{33} %argrw{"wr"}
+	if		$tmp255 532 532 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:34
+#     return 0.5;
+	assign		___452_t $const16 	%line{34} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:35
+#   return f;
+	assign		___452_t ___437_f 	%line{35} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:131
+#     float sum2 = sum + t * amp;
+	mul		$tmp256 ___452_t ___449_amp 	%line{131} %argrw{"wrr"}
+	add		___452_sum2 ___449_sum $tmp256 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:132
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp257 $const18 ___449_n 	%line{132} %argrw{"wrr"}
+	assign		$tmp258 $tmp257 	%argrw{"wr"}
+	add		$tmp259 ___449_n $const18 	%argrw{"wrr"}
+	shl		$tmp260 $const18 $tmp259 	%argrw{"wrr"}
+	sub		$tmp261 $tmp260 $const18 	%argrw{"wrr"}
+	assign		$tmp262 $tmp261 	%argrw{"wr"}
+	div		$tmp263 $tmp258 $tmp262 	%argrw{"wrr"}
+	mul		___449_sum ___449_sum $tmp263 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:133
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp264 ___449_n $const18 	%line{133} %argrw{"wrr"}
+	shl		$tmp265 $const18 $tmp264 	%argrw{"wrr"}
+	assign		$tmp266 $tmp265 	%argrw{"wr"}
+	add		$tmp267 ___449_n $const19 	%argrw{"wrr"}
+	shl		$tmp268 $const18 $tmp267 	%argrw{"wrr"}
+	sub		$tmp269 $tmp268 $const18 	%argrw{"wrr"}
+	assign		$tmp270 $tmp269 	%argrw{"wr"}
+	div		$tmp271 $tmp266 $tmp270 	%argrw{"wrr"}
+	mul		___452_sum2 ___452_sum2 $tmp271 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:134
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp272 $const10 ___449_rmd 	%line{134} %argrw{"wrr"}
+	mul		$tmp273 $tmp272 ___449_sum 	%argrw{"wrr"}
+	mul		$tmp274 ___449_rmd ___452_sum2 	%argrw{"wrr"}
+	add		$tmp236 $tmp273 $tmp274 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:137
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp275 $const18 ___449_n 	%line{137} %argrw{"wrr"}
+	assign		$tmp276 $tmp275 	%argrw{"wr"}
+	add		$tmp277 ___449_n $const18 	%argrw{"wrr"}
+	shl		$tmp278 $const18 $tmp277 	%argrw{"wrr"}
+	sub		$tmp279 $tmp278 $const18 	%argrw{"wrr"}
+	assign		$tmp280 $tmp279 	%argrw{"wr"}
+	div		$tmp281 $tmp276 $tmp280 	%argrw{"wrr"}
+	mul		___449_sum ___449_sum $tmp281 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:138
+#     return sum;
+	assign		$tmp236 ___449_sum 	%line{138} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:81
+#   Color = color(value,
+	color		Color ___508_value $tmp190 $tmp236 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{81} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:84
+#   return value;
+	assign		Fac ___508_value 	%line{84} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:142
+#   else if (dimensions == "3D")
+	eq		$tmp282 dimensions $const25 	%line{142} %argrw{"wrr"}
+	if		$tmp282 879 1320 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:143
+#     Fac = noise_texture(p, Detail, Distortion, Color);
+	functioncall	$const2 879 	%line{143} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:89
+#   vector3 p = co;
+	assign		___510_p p 	%line{89} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:90
+#   if (distortion != 0.0) {
+	neq		$tmp283 Distortion $const3 	%line{90} %argrw{"wrr"}
+	if		$tmp283 637 637 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:91
+#     p += vector3(safe_snoise(p + random_vector3_offset(0.0)) * distortion,
+	functioncall	$const26 586 	%line{91} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp287 $const6 $const3 $const3 	%line{45} %argrw{"wrrr"}
+	mul		$tmp288 $tmp287 $const5 	%argrw{"wrr"}
+	add		$tmp289 $const5 $tmp288 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:46
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp290 $const6 $const3 $const10 	%line{46} %argrw{"wrrr"}
+	mul		$tmp291 $tmp290 $const5 	%argrw{"wrr"}
+	add		$tmp292 $const5 $tmp291 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:47
+#                  100.0 + noise("hash", seed, 2.0) * 100.0);
+	noise		$tmp293 $const6 $const3 $const17 	%line{47} %argrw{"wrrr"}
+	mul		$tmp294 $tmp293 $const5 	%argrw{"wrr"}
+	add		$tmp295 $const5 $tmp294 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	point		$tmp286 $tmp289 $tmp292 $tmp295 	%line{45} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:91
+#     p += vector3(safe_snoise(p + random_vector3_offset(0.0)) * distortion,
+	add		$tmp296 ___510_p $tmp286 	%line{91} %argrw{"wrr"}
+	functioncall	$const7 594 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:72
+#   float f = noise("snoise", p);
+	noise		___442_f $const8 $tmp296 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{72} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:73
+#   if (isinf(f))
+	isinf		$tmp297 ___442_f 	%line{73} %argrw{"wr"}
+	if		$tmp297 593 593 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:74
+#     return 0.0;
+	assign		$tmp285 $const3 	%line{74} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:75
+#   return f;
+	assign		$tmp285 ___442_f 	%line{75} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:91
+#     p += vector3(safe_snoise(p + random_vector3_offset(0.0)) * distortion,
+	mul		$tmp298 $tmp285 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{91} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:92
+#                  safe_snoise(p + random_vector3_offset(1.0)) * distortion,
+	functioncall	$const26 606 	%line{92} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp301 $const6 $const10 $const3 	%line{45} %argrw{"wrrr"}
+	mul		$tmp302 $tmp301 $const5 	%argrw{"wrr"}
+	add		$tmp303 $const5 $tmp302 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:46
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp304 $const6 $const10 $const10 	%line{46} %argrw{"wrrr"}
+	mul		$tmp305 $tmp304 $const5 	%argrw{"wrr"}
+	add		$tmp306 $const5 $tmp305 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:47
+#                  100.0 + noise("hash", seed, 2.0) * 100.0);
+	noise		$tmp307 $const6 $const10 $const17 	%line{47} %argrw{"wrrr"}
+	mul		$tmp308 $tmp307 $const5 	%argrw{"wrr"}
+	add		$tmp309 $const5 $tmp308 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	point		$tmp300 $tmp303 $tmp306 $tmp309 	%line{45} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:92
+#                  safe_snoise(p + random_vector3_offset(1.0)) * distortion,
+	add		$tmp310 ___510_p $tmp300 	%line{92} %argrw{"wrr"}
+	functioncall	$const7 614 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:72
+#   float f = noise("snoise", p);
+	noise		___442_f $const8 $tmp310 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{72} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:73
+#   if (isinf(f))
+	isinf		$tmp311 ___442_f 	%line{73} %argrw{"wr"}
+	if		$tmp311 613 613 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:74
+#     return 0.0;
+	assign		$tmp299 $const3 	%line{74} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:75
+#   return f;
+	assign		$tmp299 ___442_f 	%line{75} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:92
+#                  safe_snoise(p + random_vector3_offset(1.0)) * distortion,
+	mul		$tmp312 $tmp299 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{92} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:93
+#                  safe_snoise(p + random_vector3_offset(2.0)) * distortion);
+	functioncall	$const26 626 	%line{93} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp315 $const6 $const17 $const3 	%line{45} %argrw{"wrrr"}
+	mul		$tmp316 $tmp315 $const5 	%argrw{"wrr"}
+	add		$tmp317 $const5 $tmp316 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:46
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp318 $const6 $const17 $const10 	%line{46} %argrw{"wrrr"}
+	mul		$tmp319 $tmp318 $const5 	%argrw{"wrr"}
+	add		$tmp320 $const5 $tmp319 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:47
+#                  100.0 + noise("hash", seed, 2.0) * 100.0);
+	noise		$tmp321 $const6 $const17 $const17 	%line{47} %argrw{"wrrr"}
+	mul		$tmp322 $tmp321 $const5 	%argrw{"wrr"}
+	add		$tmp323 $const5 $tmp322 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	point		$tmp314 $tmp317 $tmp320 $tmp323 	%line{45} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:93
+#                  safe_snoise(p + random_vector3_offset(2.0)) * distortion);
+	add		$tmp324 ___510_p $tmp314 	%line{93} %argrw{"wrr"}
+	functioncall	$const7 634 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:72
+#   float f = noise("snoise", p);
+	noise		___442_f $const8 $tmp324 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{72} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:73
+#   if (isinf(f))
+	isinf		$tmp325 ___442_f 	%line{73} %argrw{"wr"}
+	if		$tmp325 633 633 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:74
+#     return 0.0;
+	assign		$tmp313 $const3 	%line{74} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:75
+#   return f;
+	assign		$tmp313 ___442_f 	%line{75} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:93
+#                  safe_snoise(p + random_vector3_offset(2.0)) * distortion);
+	mul		$tmp326 $tmp313 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{93} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:91
+#     p += vector3(safe_snoise(p + random_vector3_offset(0.0)) * distortion,
+	point		$tmp284 $tmp298 $tmp312 $tmp326 	%line{91} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:93
+#                  safe_snoise(p + random_vector3_offset(2.0)) * distortion);
+	add		___510_p ___510_p $tmp284 	%line{93} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:96
+#   float value = fractal_noise(p, detail);
+	functioncall	$const9 709 	%line{96} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:145
+#   float fscale = 1.0;
+	assign		___454_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{145} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:146
+#   float amp = 1.0;
+	assign		___454_amp $const10 	%line{146} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:147
+#   float sum = 0.0;
+	assign		___454_sum $const3 	%line{147} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:148
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 644 	%line{148} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp327 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___454_octaves $tmp327 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:149
+#   int n = (int)octaves;
+	assign		___454_n ___454_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{149} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:150
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp329 647 649 661 663 	%line{150} %argrw{"r"}
+	assign		___455_i $const13 	%argrw{"wr"}
+	le		$tmp328 ___455_i ___454_n 	%argrw{"wrr"}
+	neq		$tmp329 $tmp328 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:151
+#     float t = safe_noise(fscale * p);
+	mul		$tmp330 ___454_fscale ___510_p 	%line{151} %argrw{"wrr"}
+	functioncall	$const14 657 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:40
+#   float f = noise("noise", p);
+	noise		___438_f $const15 $tmp330 	%line{40} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:41
+#   if (isinf(f))
+	isinf		$tmp331 ___438_f 	%line{41} %argrw{"wr"}
+	if		$tmp331 656 656 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:42
+#     return 0.5;
+	assign		___456_t $const16 	%line{42} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:43
+#   return f;
+	assign		___456_t ___438_f 	%line{43} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:152
+#     sum += t * amp;
+	mul		$tmp332 ___456_t ___454_amp 	%line{152} %argrw{"wrr"}
+	add		___454_sum ___454_sum $tmp332 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:153
+#     amp *= 0.5;
+	mul		___454_amp ___454_amp $const16 	%line{153} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:154
+#     fscale *= 2.0;
+	mul		___454_fscale ___454_fscale $const17 	%line{154} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:150
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp333 ___455_i 	%line{150} %argrw{"wr"}
+	add		___455_i ___455_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:156
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp334 ___454_octaves 	%line{156} %argrw{"wr"}
+	sub		___454_rmd ___454_octaves $tmp334 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:157
+#   if (rmd != 0.0) {
+	neq		$tmp335 ___454_rmd $const3 	%line{157} %argrw{"wrr"}
+	if		$tmp335 699 709 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:158
+#     float t = safe_noise(fscale * p);
+	mul		$tmp336 ___454_fscale ___510_p 	%line{158} %argrw{"wrr"}
+	functioncall	$const14 675 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:40
+#   float f = noise("noise", p);
+	noise		___438_f $const15 $tmp336 	%line{40} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:41
+#   if (isinf(f))
+	isinf		$tmp337 ___438_f 	%line{41} %argrw{"wr"}
+	if		$tmp337 674 674 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:42
+#     return 0.5;
+	assign		___457_t $const16 	%line{42} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:43
+#   return f;
+	assign		___457_t ___438_f 	%line{43} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:159
+#     float sum2 = sum + t * amp;
+	mul		$tmp338 ___457_t ___454_amp 	%line{159} %argrw{"wrr"}
+	add		___457_sum2 ___454_sum $tmp338 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:160
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp339 $const18 ___454_n 	%line{160} %argrw{"wrr"}
+	assign		$tmp340 $tmp339 	%argrw{"wr"}
+	add		$tmp341 ___454_n $const18 	%argrw{"wrr"}
+	shl		$tmp342 $const18 $tmp341 	%argrw{"wrr"}
+	sub		$tmp343 $tmp342 $const18 	%argrw{"wrr"}
+	assign		$tmp344 $tmp343 	%argrw{"wr"}
+	div		$tmp345 $tmp340 $tmp344 	%argrw{"wrr"}
+	mul		___454_sum ___454_sum $tmp345 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:161
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp346 ___454_n $const18 	%line{161} %argrw{"wrr"}
+	shl		$tmp347 $const18 $tmp346 	%argrw{"wrr"}
+	assign		$tmp348 $tmp347 	%argrw{"wr"}
+	add		$tmp349 ___454_n $const19 	%argrw{"wrr"}
+	shl		$tmp350 $const18 $tmp349 	%argrw{"wrr"}
+	sub		$tmp351 $tmp350 $const18 	%argrw{"wrr"}
+	assign		$tmp352 $tmp351 	%argrw{"wr"}
+	div		$tmp353 $tmp348 $tmp352 	%argrw{"wrr"}
+	mul		___457_sum2 ___457_sum2 $tmp353 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:162
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp354 $const10 ___454_rmd 	%line{162} %argrw{"wrr"}
+	mul		$tmp355 $tmp354 ___454_sum 	%argrw{"wrr"}
+	mul		$tmp356 ___454_rmd ___457_sum2 	%argrw{"wrr"}
+	add		___510_value $tmp355 $tmp356 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:165
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp357 $const18 ___454_n 	%line{165} %argrw{"wrr"}
+	assign		$tmp358 $tmp357 	%argrw{"wr"}
+	add		$tmp359 ___454_n $const18 	%argrw{"wrr"}
+	shl		$tmp360 $const18 $tmp359 	%argrw{"wrr"}
+	sub		$tmp361 $tmp360 $const18 	%argrw{"wrr"}
+	assign		$tmp362 $tmp361 	%argrw{"wr"}
+	div		$tmp363 $tmp358 $tmp362 	%argrw{"wrr"}
+	mul		___454_sum ___454_sum $tmp363 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:166
+#     return sum;
+	assign		___510_value ___454_sum 	%line{166} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:98
+#                 fractal_noise(p + random_vector3_offset(3.0), detail),
+	functioncall	$const26 720 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{98} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp366 $const6 $const24 $const3 	%line{45} %argrw{"wrrr"}
+	mul		$tmp367 $tmp366 $const5 	%argrw{"wrr"}
+	add		$tmp368 $const5 $tmp367 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:46
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp369 $const6 $const24 $const10 	%line{46} %argrw{"wrrr"}
+	mul		$tmp370 $tmp369 $const5 	%argrw{"wrr"}
+	add		$tmp371 $const5 $tmp370 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:47
+#                  100.0 + noise("hash", seed, 2.0) * 100.0);
+	noise		$tmp372 $const6 $const24 $const17 	%line{47} %argrw{"wrrr"}
+	mul		$tmp373 $tmp372 $const5 	%argrw{"wrr"}
+	add		$tmp374 $const5 $tmp373 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	point		$tmp365 $tmp368 $tmp371 $tmp374 	%line{45} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:98
+#                 fractal_noise(p + random_vector3_offset(3.0), detail),
+	add		$tmp375 ___510_p $tmp365 	%line{98} %argrw{"wrr"}
+	functioncall	$const9 793 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:145
+#   float fscale = 1.0;
+	assign		___454_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{145} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:146
+#   float amp = 1.0;
+	assign		___454_amp $const10 	%line{146} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:147
+#   float sum = 0.0;
+	assign		___454_sum $const3 	%line{147} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:148
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 728 	%line{148} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp376 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___454_octaves $tmp376 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:149
+#   int n = (int)octaves;
+	assign		___454_n ___454_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{149} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:150
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp378 731 733 745 747 	%line{150} %argrw{"r"}
+	assign		___455_i $const13 	%argrw{"wr"}
+	le		$tmp377 ___455_i ___454_n 	%argrw{"wrr"}
+	neq		$tmp378 $tmp377 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:151
+#     float t = safe_noise(fscale * p);
+	mul		$tmp379 ___454_fscale $tmp375 	%line{151} %argrw{"wrr"}
+	functioncall	$const14 741 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:40
+#   float f = noise("noise", p);
+	noise		___438_f $const15 $tmp379 	%line{40} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:41
+#   if (isinf(f))
+	isinf		$tmp380 ___438_f 	%line{41} %argrw{"wr"}
+	if		$tmp380 740 740 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:42
+#     return 0.5;
+	assign		___456_t $const16 	%line{42} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:43
+#   return f;
+	assign		___456_t ___438_f 	%line{43} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:152
+#     sum += t * amp;
+	mul		$tmp381 ___456_t ___454_amp 	%line{152} %argrw{"wrr"}
+	add		___454_sum ___454_sum $tmp381 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:153
+#     amp *= 0.5;
+	mul		___454_amp ___454_amp $const16 	%line{153} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:154
+#     fscale *= 2.0;
+	mul		___454_fscale ___454_fscale $const17 	%line{154} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:150
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp382 ___455_i 	%line{150} %argrw{"wr"}
+	add		___455_i ___455_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:156
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp383 ___454_octaves 	%line{156} %argrw{"wr"}
+	sub		___454_rmd ___454_octaves $tmp383 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:157
+#   if (rmd != 0.0) {
+	neq		$tmp384 ___454_rmd $const3 	%line{157} %argrw{"wrr"}
+	if		$tmp384 783 793 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:158
+#     float t = safe_noise(fscale * p);
+	mul		$tmp385 ___454_fscale $tmp375 	%line{158} %argrw{"wrr"}
+	functioncall	$const14 759 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:40
+#   float f = noise("noise", p);
+	noise		___438_f $const15 $tmp385 	%line{40} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:41
+#   if (isinf(f))
+	isinf		$tmp386 ___438_f 	%line{41} %argrw{"wr"}
+	if		$tmp386 758 758 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:42
+#     return 0.5;
+	assign		___457_t $const16 	%line{42} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:43
+#   return f;
+	assign		___457_t ___438_f 	%line{43} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:159
+#     float sum2 = sum + t * amp;
+	mul		$tmp387 ___457_t ___454_amp 	%line{159} %argrw{"wrr"}
+	add		___457_sum2 ___454_sum $tmp387 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:160
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp388 $const18 ___454_n 	%line{160} %argrw{"wrr"}
+	assign		$tmp389 $tmp388 	%argrw{"wr"}
+	add		$tmp390 ___454_n $const18 	%argrw{"wrr"}
+	shl		$tmp391 $const18 $tmp390 	%argrw{"wrr"}
+	sub		$tmp392 $tmp391 $const18 	%argrw{"wrr"}
+	assign		$tmp393 $tmp392 	%argrw{"wr"}
+	div		$tmp394 $tmp389 $tmp393 	%argrw{"wrr"}
+	mul		___454_sum ___454_sum $tmp394 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:161
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp395 ___454_n $const18 	%line{161} %argrw{"wrr"}
+	shl		$tmp396 $const18 $tmp395 	%argrw{"wrr"}
+	assign		$tmp397 $tmp396 	%argrw{"wr"}
+	add		$tmp398 ___454_n $const19 	%argrw{"wrr"}
+	shl		$tmp399 $const18 $tmp398 	%argrw{"wrr"}
+	sub		$tmp400 $tmp399 $const18 	%argrw{"wrr"}
+	assign		$tmp401 $tmp400 	%argrw{"wr"}
+	div		$tmp402 $tmp397 $tmp401 	%argrw{"wrr"}
+	mul		___457_sum2 ___457_sum2 $tmp402 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:162
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp403 $const10 ___454_rmd 	%line{162} %argrw{"wrr"}
+	mul		$tmp404 $tmp403 ___454_sum 	%argrw{"wrr"}
+	mul		$tmp405 ___454_rmd ___457_sum2 	%argrw{"wrr"}
+	add		$tmp364 $tmp404 $tmp405 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:165
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp406 $const18 ___454_n 	%line{165} %argrw{"wrr"}
+	assign		$tmp407 $tmp406 	%argrw{"wr"}
+	add		$tmp408 ___454_n $const18 	%argrw{"wrr"}
+	shl		$tmp409 $const18 $tmp408 	%argrw{"wrr"}
+	sub		$tmp410 $tmp409 $const18 	%argrw{"wrr"}
+	assign		$tmp411 $tmp410 	%argrw{"wr"}
+	div		$tmp412 $tmp407 $tmp411 	%argrw{"wrr"}
+	mul		___454_sum ___454_sum $tmp412 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:166
+#     return sum;
+	assign		$tmp364 ___454_sum 	%line{166} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:99
+#                 fractal_noise(p + random_vector3_offset(4.0), detail));
+	functioncall	$const26 804 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{99} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp415 $const6 $const27 $const3 	%line{45} %argrw{"wrrr"}
+	mul		$tmp416 $tmp415 $const5 	%argrw{"wrr"}
+	add		$tmp417 $const5 $tmp416 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:46
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp418 $const6 $const27 $const10 	%line{46} %argrw{"wrrr"}
+	mul		$tmp419 $tmp418 $const5 	%argrw{"wrr"}
+	add		$tmp420 $const5 $tmp419 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:47
+#                  100.0 + noise("hash", seed, 2.0) * 100.0);
+	noise		$tmp421 $const6 $const27 $const17 	%line{47} %argrw{"wrrr"}
+	mul		$tmp422 $tmp421 $const5 	%argrw{"wrr"}
+	add		$tmp423 $const5 $tmp422 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:45
+#   return vector3(100.0 + noise("hash", seed, 0.0) * 100.0,
+	point		$tmp414 $tmp417 $tmp420 $tmp423 	%line{45} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:99
+#                 fractal_noise(p + random_vector3_offset(4.0), detail));
+	add		$tmp424 ___510_p $tmp414 	%line{99} %argrw{"wrr"}
+	functioncall	$const9 877 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:145
+#   float fscale = 1.0;
+	assign		___454_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{145} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:146
+#   float amp = 1.0;
+	assign		___454_amp $const10 	%line{146} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:147
+#   float sum = 0.0;
+	assign		___454_sum $const3 	%line{147} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:148
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 812 	%line{148} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp425 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___454_octaves $tmp425 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:149
+#   int n = (int)octaves;
+	assign		___454_n ___454_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{149} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:150
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp427 815 817 829 831 	%line{150} %argrw{"r"}
+	assign		___455_i $const13 	%argrw{"wr"}
+	le		$tmp426 ___455_i ___454_n 	%argrw{"wrr"}
+	neq		$tmp427 $tmp426 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:151
+#     float t = safe_noise(fscale * p);
+	mul		$tmp428 ___454_fscale $tmp424 	%line{151} %argrw{"wrr"}
+	functioncall	$const14 825 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:40
+#   float f = noise("noise", p);
+	noise		___438_f $const15 $tmp428 	%line{40} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:41
+#   if (isinf(f))
+	isinf		$tmp429 ___438_f 	%line{41} %argrw{"wr"}
+	if		$tmp429 824 824 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:42
+#     return 0.5;
+	assign		___456_t $const16 	%line{42} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:43
+#   return f;
+	assign		___456_t ___438_f 	%line{43} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:152
+#     sum += t * amp;
+	mul		$tmp430 ___456_t ___454_amp 	%line{152} %argrw{"wrr"}
+	add		___454_sum ___454_sum $tmp430 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:153
+#     amp *= 0.5;
+	mul		___454_amp ___454_amp $const16 	%line{153} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:154
+#     fscale *= 2.0;
+	mul		___454_fscale ___454_fscale $const17 	%line{154} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:150
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp431 ___455_i 	%line{150} %argrw{"wr"}
+	add		___455_i ___455_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:156
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp432 ___454_octaves 	%line{156} %argrw{"wr"}
+	sub		___454_rmd ___454_octaves $tmp432 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:157
+#   if (rmd != 0.0) {
+	neq		$tmp433 ___454_rmd $const3 	%line{157} %argrw{"wrr"}
+	if		$tmp433 867 877 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:158
+#     float t = safe_noise(fscale * p);
+	mul		$tmp434 ___454_fscale $tmp424 	%line{158} %argrw{"wrr"}
+	functioncall	$const14 843 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:40
+#   float f = noise("noise", p);
+	noise		___438_f $const15 $tmp434 	%line{40} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:41
+#   if (isinf(f))
+	isinf		$tmp435 ___438_f 	%line{41} %argrw{"wr"}
+	if		$tmp435 842 842 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:42
+#     return 0.5;
+	assign		___457_t $const16 	%line{42} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:43
+#   return f;
+	assign		___457_t ___438_f 	%line{43} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:159
+#     float sum2 = sum + t * amp;
+	mul		$tmp436 ___457_t ___454_amp 	%line{159} %argrw{"wrr"}
+	add		___457_sum2 ___454_sum $tmp436 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:160
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp437 $const18 ___454_n 	%line{160} %argrw{"wrr"}
+	assign		$tmp438 $tmp437 	%argrw{"wr"}
+	add		$tmp439 ___454_n $const18 	%argrw{"wrr"}
+	shl		$tmp440 $const18 $tmp439 	%argrw{"wrr"}
+	sub		$tmp441 $tmp440 $const18 	%argrw{"wrr"}
+	assign		$tmp442 $tmp441 	%argrw{"wr"}
+	div		$tmp443 $tmp438 $tmp442 	%argrw{"wrr"}
+	mul		___454_sum ___454_sum $tmp443 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:161
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp444 ___454_n $const18 	%line{161} %argrw{"wrr"}
+	shl		$tmp445 $const18 $tmp444 	%argrw{"wrr"}
+	assign		$tmp446 $tmp445 	%argrw{"wr"}
+	add		$tmp447 ___454_n $const19 	%argrw{"wrr"}
+	shl		$tmp448 $const18 $tmp447 	%argrw{"wrr"}
+	sub		$tmp449 $tmp448 $const18 	%argrw{"wrr"}
+	assign		$tmp450 $tmp449 	%argrw{"wr"}
+	div		$tmp451 $tmp446 $tmp450 	%argrw{"wrr"}
+	mul		___457_sum2 ___457_sum2 $tmp451 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:162
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp452 $const10 ___454_rmd 	%line{162} %argrw{"wrr"}
+	mul		$tmp453 $tmp452 ___454_sum 	%argrw{"wrr"}
+	mul		$tmp454 ___454_rmd ___457_sum2 	%argrw{"wrr"}
+	add		$tmp413 $tmp453 $tmp454 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:165
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp455 $const18 ___454_n 	%line{165} %argrw{"wrr"}
+	assign		$tmp456 $tmp455 	%argrw{"wr"}
+	add		$tmp457 ___454_n $const18 	%argrw{"wrr"}
+	shl		$tmp458 $const18 $tmp457 	%argrw{"wrr"}
+	sub		$tmp459 $tmp458 $const18 	%argrw{"wrr"}
+	assign		$tmp460 $tmp459 	%argrw{"wr"}
+	div		$tmp461 $tmp456 $tmp460 	%argrw{"wrr"}
+	mul		___454_sum ___454_sum $tmp461 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:166
+#     return sum;
+	assign		$tmp413 ___454_sum 	%line{166} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:97
+#   Color = color(value,
+	color		Color ___510_value $tmp364 $tmp413 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{97} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:100
+#   return value;
+	assign		Fac ___510_value 	%line{100} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:144
+#   else if (dimensions == "4D")
+	eq		$tmp462 dimensions $const28 	%line{144} %argrw{"wrr"}
+	if		$tmp462 1319 1320 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:145
+#     Fac = noise_texture(vector4(p[0], p[1], p[2], w), Detail, Distortion, Color);
+	compref		$tmp463.x p $const13 	%line{145} %argrw{"wrr"}
+	compref		$tmp463.y p $const18 	%argrw{"wrr"}
+	compref		$tmp463.z p $const19 	%argrw{"wrr"}
+	assign		$tmp463.w w 	%argrw{"wr"}
+	functioncall	$const2 1319 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:105
+#   vector4 p = co;
+	assign		___512_p.x $tmp463.x 	%line{105} %argrw{"wr"}
+	assign		___512_p.y $tmp463.y 	%argrw{"wr"}
+	assign		___512_p.z $tmp463.z 	%argrw{"wr"}
+	assign		___512_p.w $tmp463.w 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:106
+#   if (distortion != 0.0) {
+	neq		$tmp464 Distortion $const3 	%line{106} %argrw{"wrr"}
+	if		$tmp464 1005 1005 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:107
+#     p += vector4(safe_snoise(p + random_vector4_offset(0.0)) * distortion,
+	functioncall	$const29 905 	%line{107} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:52
+#   return vector4(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp469 $const6 $const3 $const3 	%line{52} %argrw{"wrrr"}
+	mul		$tmp470 $tmp469 $const5 	%argrw{"wrr"}
+	add		$tmp468.x $const5 $tmp470 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:53
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp471 $const6 $const3 $const10 	%line{53} %argrw{"wrrr"}
+	mul		$tmp472 $tmp471 $const5 	%argrw{"wrr"}
+	add		$tmp468.y $const5 $tmp472 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:54
+#                  100.0 + noise("hash", seed, 2.0) * 100.0,
+	noise		$tmp473 $const6 $const3 $const17 	%line{54} %argrw{"wrrr"}
+	mul		$tmp474 $tmp473 $const5 	%argrw{"wrr"}
+	add		$tmp468.z $const5 $tmp474 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:55
+#                  100.0 + noise("hash", seed, 3.0) * 100.0);
+	noise		$tmp475 $const6 $const3 $const24 	%line{55} %argrw{"wrrr"}
+	mul		$tmp476 $tmp475 $const5 	%argrw{"wrr"}
+	add		$tmp468.w $const5 $tmp476 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 910 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:30
+#     return vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+	add		$tmp467.x ___512_p.x $tmp468.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{30} %argrw{"wrr"}
+	add		$tmp467.y ___512_p.y $tmp468.y 	%argrw{"wrr"}
+	add		$tmp467.z ___512_p.z $tmp468.z 	%argrw{"wrr"}
+	add		$tmp467.w ___512_p.w $tmp468.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:107
+#     p += vector4(safe_snoise(p + random_vector4_offset(0.0)) * distortion,
+	functioncall	$const7 918 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{107} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:80
+#   float f = noise("snoise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp477 $tmp467.x $tmp467.y $tmp467.z 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{80} %argrw{"wrrr"}
+	noise		___443_f $const8 $tmp477 $tmp467.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:81
+#   if (isinf(f))
+	isinf		$tmp478 ___443_f 	%line{81} %argrw{"wr"}
+	if		$tmp478 917 917 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:82
+#     return 0.0;
+	assign		$tmp466 $const3 	%line{82} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:83
+#   return f;
+	assign		$tmp466 ___443_f 	%line{83} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:107
+#     p += vector4(safe_snoise(p + random_vector4_offset(0.0)) * distortion,
+	mul		$tmp465.x $tmp466 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{107} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:108
+#                  safe_snoise(p + random_vector4_offset(1.0)) * distortion,
+	functioncall	$const29 932 	%line{108} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:52
+#   return vector4(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp482 $const6 $const10 $const3 	%line{52} %argrw{"wrrr"}
+	mul		$tmp483 $tmp482 $const5 	%argrw{"wrr"}
+	add		$tmp481.x $const5 $tmp483 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:53
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp484 $const6 $const10 $const10 	%line{53} %argrw{"wrrr"}
+	mul		$tmp485 $tmp484 $const5 	%argrw{"wrr"}
+	add		$tmp481.y $const5 $tmp485 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:54
+#                  100.0 + noise("hash", seed, 2.0) * 100.0,
+	noise		$tmp486 $const6 $const10 $const17 	%line{54} %argrw{"wrrr"}
+	mul		$tmp487 $tmp486 $const5 	%argrw{"wrr"}
+	add		$tmp481.z $const5 $tmp487 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:55
+#                  100.0 + noise("hash", seed, 3.0) * 100.0);
+	noise		$tmp488 $const6 $const10 $const24 	%line{55} %argrw{"wrrr"}
+	mul		$tmp489 $tmp488 $const5 	%argrw{"wrr"}
+	add		$tmp481.w $const5 $tmp489 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 937 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:30
+#     return vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+	add		$tmp480.x ___512_p.x $tmp481.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{30} %argrw{"wrr"}
+	add		$tmp480.y ___512_p.y $tmp481.y 	%argrw{"wrr"}
+	add		$tmp480.z ___512_p.z $tmp481.z 	%argrw{"wrr"}
+	add		$tmp480.w ___512_p.w $tmp481.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:108
+#                  safe_snoise(p + random_vector4_offset(1.0)) * distortion,
+	functioncall	$const7 945 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{108} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:80
+#   float f = noise("snoise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp490 $tmp480.x $tmp480.y $tmp480.z 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{80} %argrw{"wrrr"}
+	noise		___443_f $const8 $tmp490 $tmp480.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:81
+#   if (isinf(f))
+	isinf		$tmp491 ___443_f 	%line{81} %argrw{"wr"}
+	if		$tmp491 944 944 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:82
+#     return 0.0;
+	assign		$tmp479 $const3 	%line{82} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:83
+#   return f;
+	assign		$tmp479 ___443_f 	%line{83} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:108
+#                  safe_snoise(p + random_vector4_offset(1.0)) * distortion,
+	mul		$tmp465.y $tmp479 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{108} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:109
+#                  safe_snoise(p + random_vector4_offset(2.0)) * distortion,
+	functioncall	$const29 959 	%line{109} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:52
+#   return vector4(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp495 $const6 $const17 $const3 	%line{52} %argrw{"wrrr"}
+	mul		$tmp496 $tmp495 $const5 	%argrw{"wrr"}
+	add		$tmp494.x $const5 $tmp496 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:53
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp497 $const6 $const17 $const10 	%line{53} %argrw{"wrrr"}
+	mul		$tmp498 $tmp497 $const5 	%argrw{"wrr"}
+	add		$tmp494.y $const5 $tmp498 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:54
+#                  100.0 + noise("hash", seed, 2.0) * 100.0,
+	noise		$tmp499 $const6 $const17 $const17 	%line{54} %argrw{"wrrr"}
+	mul		$tmp500 $tmp499 $const5 	%argrw{"wrr"}
+	add		$tmp494.z $const5 $tmp500 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:55
+#                  100.0 + noise("hash", seed, 3.0) * 100.0);
+	noise		$tmp501 $const6 $const17 $const24 	%line{55} %argrw{"wrrr"}
+	mul		$tmp502 $tmp501 $const5 	%argrw{"wrr"}
+	add		$tmp494.w $const5 $tmp502 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 964 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:30
+#     return vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+	add		$tmp493.x ___512_p.x $tmp494.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{30} %argrw{"wrr"}
+	add		$tmp493.y ___512_p.y $tmp494.y 	%argrw{"wrr"}
+	add		$tmp493.z ___512_p.z $tmp494.z 	%argrw{"wrr"}
+	add		$tmp493.w ___512_p.w $tmp494.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:109
+#                  safe_snoise(p + random_vector4_offset(2.0)) * distortion,
+	functioncall	$const7 972 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{109} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:80
+#   float f = noise("snoise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp503 $tmp493.x $tmp493.y $tmp493.z 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{80} %argrw{"wrrr"}
+	noise		___443_f $const8 $tmp503 $tmp493.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:81
+#   if (isinf(f))
+	isinf		$tmp504 ___443_f 	%line{81} %argrw{"wr"}
+	if		$tmp504 971 971 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:82
+#     return 0.0;
+	assign		$tmp492 $const3 	%line{82} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:83
+#   return f;
+	assign		$tmp492 ___443_f 	%line{83} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:109
+#                  safe_snoise(p + random_vector4_offset(2.0)) * distortion,
+	mul		$tmp465.z $tmp492 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{109} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:110
+#                  safe_snoise(p + random_vector4_offset(3.0)) * distortion);
+	functioncall	$const29 986 	%line{110} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:52
+#   return vector4(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp508 $const6 $const24 $const3 	%line{52} %argrw{"wrrr"}
+	mul		$tmp509 $tmp508 $const5 	%argrw{"wrr"}
+	add		$tmp507.x $const5 $tmp509 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:53
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp510 $const6 $const24 $const10 	%line{53} %argrw{"wrrr"}
+	mul		$tmp511 $tmp510 $const5 	%argrw{"wrr"}
+	add		$tmp507.y $const5 $tmp511 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:54
+#                  100.0 + noise("hash", seed, 2.0) * 100.0,
+	noise		$tmp512 $const6 $const24 $const17 	%line{54} %argrw{"wrrr"}
+	mul		$tmp513 $tmp512 $const5 	%argrw{"wrr"}
+	add		$tmp507.z $const5 $tmp513 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:55
+#                  100.0 + noise("hash", seed, 3.0) * 100.0);
+	noise		$tmp514 $const6 $const24 $const24 	%line{55} %argrw{"wrrr"}
+	mul		$tmp515 $tmp514 $const5 	%argrw{"wrr"}
+	add		$tmp507.w $const5 $tmp515 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 991 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:30
+#     return vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+	add		$tmp506.x ___512_p.x $tmp507.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{30} %argrw{"wrr"}
+	add		$tmp506.y ___512_p.y $tmp507.y 	%argrw{"wrr"}
+	add		$tmp506.z ___512_p.z $tmp507.z 	%argrw{"wrr"}
+	add		$tmp506.w ___512_p.w $tmp507.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:110
+#                  safe_snoise(p + random_vector4_offset(3.0)) * distortion);
+	functioncall	$const7 999 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{110} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:80
+#   float f = noise("snoise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp516 $tmp506.x $tmp506.y $tmp506.z 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{80} %argrw{"wrrr"}
+	noise		___443_f $const8 $tmp516 $tmp506.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:81
+#   if (isinf(f))
+	isinf		$tmp517 ___443_f 	%line{81} %argrw{"wr"}
+	if		$tmp517 998 998 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:82
+#     return 0.0;
+	assign		$tmp505 $const3 	%line{82} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:83
+#   return f;
+	assign		$tmp505 ___443_f 	%line{83} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:110
+#                  safe_snoise(p + random_vector4_offset(3.0)) * distortion);
+	mul		$tmp465.w $tmp505 Distortion 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{110} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 1005 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:30
+#     return vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+	add		___512_p.x ___512_p.x $tmp465.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{30} %argrw{"wrr"}
+	add		___512_p.y ___512_p.y $tmp465.y 	%argrw{"wrr"}
+	add		___512_p.z ___512_p.z $tmp465.z 	%argrw{"wrr"}
+	add		___512_p.w ___512_p.w $tmp465.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:113
+#   float value = fractal_noise(p, detail);
+	functioncall	$const9 1097 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{113} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:173
+#   float fscale = 1.0;
+	assign		___459_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{173} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:174
+#   float amp = 1.0;
+	assign		___459_amp $const10 	%line{174} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:175
+#   float sum = 0.0;
+	assign		___459_sum $const3 	%line{175} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:176
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 1012 	%line{176} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp518 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___459_octaves $tmp518 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:177
+#   int n = (int)octaves;
+	assign		___459_n ___459_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{177} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:178
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp520 1015 1017 1039 1041 	%line{178} %argrw{"r"}
+	assign		___460_i $const13 	%argrw{"wr"}
+	le		$tmp519 ___460_i ___459_n 	%argrw{"wrr"}
+	neq		$tmp520 $tmp519 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1027 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:100
+#     return vector4(a, a, a, a) * b;
+	assign		$tmp522.x ___459_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{100} %argrw{"wr"}
+	assign		$tmp522.y ___459_fscale 	%argrw{"wr"}
+	assign		$tmp522.z ___459_fscale 	%argrw{"wr"}
+	assign		$tmp522.w ___459_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1027 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:80
+#     return vector4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+	mul		$tmp521.x $tmp522.x ___512_p.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{80} %argrw{"wrr"}
+	mul		$tmp521.y $tmp522.y ___512_p.y 	%argrw{"wrr"}
+	mul		$tmp521.z $tmp522.z ___512_p.z 	%argrw{"wrr"}
+	mul		$tmp521.w $tmp522.w ___512_p.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:179
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 1035 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{179} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:48
+#   float f = noise("noise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp523 $tmp521.x $tmp521.y $tmp521.z 	%line{48} %argrw{"wrrr"}
+	noise		___439_f $const15 $tmp523 $tmp521.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:49
+#   if (isinf(f))
+	isinf		$tmp524 ___439_f 	%line{49} %argrw{"wr"}
+	if		$tmp524 1034 1034 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:50
+#     return 0.5;
+	assign		___461_t $const16 	%line{50} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:51
+#   return f;
+	assign		___461_t ___439_f 	%line{51} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:180
+#     sum += t * amp;
+	mul		$tmp525 ___461_t ___459_amp 	%line{180} %argrw{"wrr"}
+	add		___459_sum ___459_sum $tmp525 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:181
+#     amp *= 0.5;
+	mul		___459_amp ___459_amp $const16 	%line{181} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:182
+#     fscale *= 2.0;
+	mul		___459_fscale ___459_fscale $const17 	%line{182} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:178
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp526 ___460_i 	%line{178} %argrw{"wr"}
+	add		___460_i ___460_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:184
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp527 ___459_octaves 	%line{184} %argrw{"wr"}
+	sub		___459_rmd ___459_octaves $tmp527 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:185
+#   if (rmd != 0.0) {
+	neq		$tmp528 ___459_rmd $const3 	%line{185} %argrw{"wrr"}
+	if		$tmp528 1087 1097 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1055 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:100
+#     return vector4(a, a, a, a) * b;
+	assign		$tmp530.x ___459_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{100} %argrw{"wr"}
+	assign		$tmp530.y ___459_fscale 	%argrw{"wr"}
+	assign		$tmp530.z ___459_fscale 	%argrw{"wr"}
+	assign		$tmp530.w ___459_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1055 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:80
+#     return vector4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+	mul		$tmp529.x $tmp530.x ___512_p.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{80} %argrw{"wrr"}
+	mul		$tmp529.y $tmp530.y ___512_p.y 	%argrw{"wrr"}
+	mul		$tmp529.z $tmp530.z ___512_p.z 	%argrw{"wrr"}
+	mul		$tmp529.w $tmp530.w ___512_p.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:186
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 1063 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{186} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:48
+#   float f = noise("noise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp531 $tmp529.x $tmp529.y $tmp529.z 	%line{48} %argrw{"wrrr"}
+	noise		___439_f $const15 $tmp531 $tmp529.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:49
+#   if (isinf(f))
+	isinf		$tmp532 ___439_f 	%line{49} %argrw{"wr"}
+	if		$tmp532 1062 1062 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:50
+#     return 0.5;
+	assign		___462_t $const16 	%line{50} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:51
+#   return f;
+	assign		___462_t ___439_f 	%line{51} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:187
+#     float sum2 = sum + t * amp;
+	mul		$tmp533 ___462_t ___459_amp 	%line{187} %argrw{"wrr"}
+	add		___462_sum2 ___459_sum $tmp533 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:188
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp534 $const18 ___459_n 	%line{188} %argrw{"wrr"}
+	assign		$tmp535 $tmp534 	%argrw{"wr"}
+	add		$tmp536 ___459_n $const18 	%argrw{"wrr"}
+	shl		$tmp537 $const18 $tmp536 	%argrw{"wrr"}
+	sub		$tmp538 $tmp537 $const18 	%argrw{"wrr"}
+	assign		$tmp539 $tmp538 	%argrw{"wr"}
+	div		$tmp540 $tmp535 $tmp539 	%argrw{"wrr"}
+	mul		___459_sum ___459_sum $tmp540 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:189
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp541 ___459_n $const18 	%line{189} %argrw{"wrr"}
+	shl		$tmp542 $const18 $tmp541 	%argrw{"wrr"}
+	assign		$tmp543 $tmp542 	%argrw{"wr"}
+	add		$tmp544 ___459_n $const19 	%argrw{"wrr"}
+	shl		$tmp545 $const18 $tmp544 	%argrw{"wrr"}
+	sub		$tmp546 $tmp545 $const18 	%argrw{"wrr"}
+	assign		$tmp547 $tmp546 	%argrw{"wr"}
+	div		$tmp548 $tmp543 $tmp547 	%argrw{"wrr"}
+	mul		___462_sum2 ___462_sum2 $tmp548 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:190
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp549 $const10 ___459_rmd 	%line{190} %argrw{"wrr"}
+	mul		$tmp550 $tmp549 ___459_sum 	%argrw{"wrr"}
+	mul		$tmp551 ___459_rmd ___462_sum2 	%argrw{"wrr"}
+	add		___512_value $tmp550 $tmp551 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:193
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp552 $const18 ___459_n 	%line{193} %argrw{"wrr"}
+	assign		$tmp553 $tmp552 	%argrw{"wr"}
+	add		$tmp554 ___459_n $const18 	%argrw{"wrr"}
+	shl		$tmp555 $const18 $tmp554 	%argrw{"wrr"}
+	sub		$tmp556 $tmp555 $const18 	%argrw{"wrr"}
+	assign		$tmp557 $tmp556 	%argrw{"wr"}
+	div		$tmp558 $tmp553 $tmp557 	%argrw{"wrr"}
+	mul		___459_sum ___459_sum $tmp558 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:194
+#     return sum;
+	assign		___512_value ___459_sum 	%line{194} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:115
+#                 fractal_noise(p + random_vector4_offset(4.0), detail),
+	functioncall	$const29 1110 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{115} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:52
+#   return vector4(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp562 $const6 $const27 $const3 	%line{52} %argrw{"wrrr"}
+	mul		$tmp563 $tmp562 $const5 	%argrw{"wrr"}
+	add		$tmp561.x $const5 $tmp563 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:53
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp564 $const6 $const27 $const10 	%line{53} %argrw{"wrrr"}
+	mul		$tmp565 $tmp564 $const5 	%argrw{"wrr"}
+	add		$tmp561.y $const5 $tmp565 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:54
+#                  100.0 + noise("hash", seed, 2.0) * 100.0,
+	noise		$tmp566 $const6 $const27 $const17 	%line{54} %argrw{"wrrr"}
+	mul		$tmp567 $tmp566 $const5 	%argrw{"wrr"}
+	add		$tmp561.z $const5 $tmp567 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:55
+#                  100.0 + noise("hash", seed, 3.0) * 100.0);
+	noise		$tmp568 $const6 $const27 $const24 	%line{55} %argrw{"wrrr"}
+	mul		$tmp569 $tmp568 $const5 	%argrw{"wrr"}
+	add		$tmp561.w $const5 $tmp569 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 1115 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:30
+#     return vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+	add		$tmp560.x ___512_p.x $tmp561.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{30} %argrw{"wrr"}
+	add		$tmp560.y ___512_p.y $tmp561.y 	%argrw{"wrr"}
+	add		$tmp560.z ___512_p.z $tmp561.z 	%argrw{"wrr"}
+	add		$tmp560.w ___512_p.w $tmp561.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:115
+#                 fractal_noise(p + random_vector4_offset(4.0), detail),
+	functioncall	$const9 1207 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{115} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:173
+#   float fscale = 1.0;
+	assign		___459_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{173} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:174
+#   float amp = 1.0;
+	assign		___459_amp $const10 	%line{174} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:175
+#   float sum = 0.0;
+	assign		___459_sum $const3 	%line{175} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:176
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 1122 	%line{176} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp570 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___459_octaves $tmp570 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:177
+#   int n = (int)octaves;
+	assign		___459_n ___459_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{177} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:178
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp572 1125 1127 1149 1151 	%line{178} %argrw{"r"}
+	assign		___460_i $const13 	%argrw{"wr"}
+	le		$tmp571 ___460_i ___459_n 	%argrw{"wrr"}
+	neq		$tmp572 $tmp571 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1137 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:100
+#     return vector4(a, a, a, a) * b;
+	assign		$tmp574.x ___459_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{100} %argrw{"wr"}
+	assign		$tmp574.y ___459_fscale 	%argrw{"wr"}
+	assign		$tmp574.z ___459_fscale 	%argrw{"wr"}
+	assign		$tmp574.w ___459_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1137 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:80
+#     return vector4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+	mul		$tmp573.x $tmp574.x $tmp560.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{80} %argrw{"wrr"}
+	mul		$tmp573.y $tmp574.y $tmp560.y 	%argrw{"wrr"}
+	mul		$tmp573.z $tmp574.z $tmp560.z 	%argrw{"wrr"}
+	mul		$tmp573.w $tmp574.w $tmp560.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:179
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 1145 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{179} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:48
+#   float f = noise("noise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp575 $tmp573.x $tmp573.y $tmp573.z 	%line{48} %argrw{"wrrr"}
+	noise		___439_f $const15 $tmp575 $tmp573.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:49
+#   if (isinf(f))
+	isinf		$tmp576 ___439_f 	%line{49} %argrw{"wr"}
+	if		$tmp576 1144 1144 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:50
+#     return 0.5;
+	assign		___461_t $const16 	%line{50} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:51
+#   return f;
+	assign		___461_t ___439_f 	%line{51} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:180
+#     sum += t * amp;
+	mul		$tmp577 ___461_t ___459_amp 	%line{180} %argrw{"wrr"}
+	add		___459_sum ___459_sum $tmp577 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:181
+#     amp *= 0.5;
+	mul		___459_amp ___459_amp $const16 	%line{181} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:182
+#     fscale *= 2.0;
+	mul		___459_fscale ___459_fscale $const17 	%line{182} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:178
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp578 ___460_i 	%line{178} %argrw{"wr"}
+	add		___460_i ___460_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:184
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp579 ___459_octaves 	%line{184} %argrw{"wr"}
+	sub		___459_rmd ___459_octaves $tmp579 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:185
+#   if (rmd != 0.0) {
+	neq		$tmp580 ___459_rmd $const3 	%line{185} %argrw{"wrr"}
+	if		$tmp580 1197 1207 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1165 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:100
+#     return vector4(a, a, a, a) * b;
+	assign		$tmp582.x ___459_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{100} %argrw{"wr"}
+	assign		$tmp582.y ___459_fscale 	%argrw{"wr"}
+	assign		$tmp582.z ___459_fscale 	%argrw{"wr"}
+	assign		$tmp582.w ___459_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1165 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:80
+#     return vector4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+	mul		$tmp581.x $tmp582.x $tmp560.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{80} %argrw{"wrr"}
+	mul		$tmp581.y $tmp582.y $tmp560.y 	%argrw{"wrr"}
+	mul		$tmp581.z $tmp582.z $tmp560.z 	%argrw{"wrr"}
+	mul		$tmp581.w $tmp582.w $tmp560.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:186
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 1173 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{186} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:48
+#   float f = noise("noise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp583 $tmp581.x $tmp581.y $tmp581.z 	%line{48} %argrw{"wrrr"}
+	noise		___439_f $const15 $tmp583 $tmp581.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:49
+#   if (isinf(f))
+	isinf		$tmp584 ___439_f 	%line{49} %argrw{"wr"}
+	if		$tmp584 1172 1172 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:50
+#     return 0.5;
+	assign		___462_t $const16 	%line{50} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:51
+#   return f;
+	assign		___462_t ___439_f 	%line{51} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:187
+#     float sum2 = sum + t * amp;
+	mul		$tmp585 ___462_t ___459_amp 	%line{187} %argrw{"wrr"}
+	add		___462_sum2 ___459_sum $tmp585 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:188
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp586 $const18 ___459_n 	%line{188} %argrw{"wrr"}
+	assign		$tmp587 $tmp586 	%argrw{"wr"}
+	add		$tmp588 ___459_n $const18 	%argrw{"wrr"}
+	shl		$tmp589 $const18 $tmp588 	%argrw{"wrr"}
+	sub		$tmp590 $tmp589 $const18 	%argrw{"wrr"}
+	assign		$tmp591 $tmp590 	%argrw{"wr"}
+	div		$tmp592 $tmp587 $tmp591 	%argrw{"wrr"}
+	mul		___459_sum ___459_sum $tmp592 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:189
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp593 ___459_n $const18 	%line{189} %argrw{"wrr"}
+	shl		$tmp594 $const18 $tmp593 	%argrw{"wrr"}
+	assign		$tmp595 $tmp594 	%argrw{"wr"}
+	add		$tmp596 ___459_n $const19 	%argrw{"wrr"}
+	shl		$tmp597 $const18 $tmp596 	%argrw{"wrr"}
+	sub		$tmp598 $tmp597 $const18 	%argrw{"wrr"}
+	assign		$tmp599 $tmp598 	%argrw{"wr"}
+	div		$tmp600 $tmp595 $tmp599 	%argrw{"wrr"}
+	mul		___462_sum2 ___462_sum2 $tmp600 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:190
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp601 $const10 ___459_rmd 	%line{190} %argrw{"wrr"}
+	mul		$tmp602 $tmp601 ___459_sum 	%argrw{"wrr"}
+	mul		$tmp603 ___459_rmd ___462_sum2 	%argrw{"wrr"}
+	add		$tmp559 $tmp602 $tmp603 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:193
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp604 $const18 ___459_n 	%line{193} %argrw{"wrr"}
+	assign		$tmp605 $tmp604 	%argrw{"wr"}
+	add		$tmp606 ___459_n $const18 	%argrw{"wrr"}
+	shl		$tmp607 $const18 $tmp606 	%argrw{"wrr"}
+	sub		$tmp608 $tmp607 $const18 	%argrw{"wrr"}
+	assign		$tmp609 $tmp608 	%argrw{"wr"}
+	div		$tmp610 $tmp605 $tmp609 	%argrw{"wrr"}
+	mul		___459_sum ___459_sum $tmp610 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:194
+#     return sum;
+	assign		$tmp559 ___459_sum 	%line{194} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:116
+#                 fractal_noise(p + random_vector4_offset(5.0), detail));
+	functioncall	$const29 1220 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{116} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:52
+#   return vector4(100.0 + noise("hash", seed, 0.0) * 100.0,
+	noise		$tmp614 $const6 $const30 $const3 	%line{52} %argrw{"wrrr"}
+	mul		$tmp615 $tmp614 $const5 	%argrw{"wrr"}
+	add		$tmp613.x $const5 $tmp615 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:53
+#                  100.0 + noise("hash", seed, 1.0) * 100.0,
+	noise		$tmp616 $const6 $const30 $const10 	%line{53} %argrw{"wrrr"}
+	mul		$tmp617 $tmp616 $const5 	%argrw{"wrr"}
+	add		$tmp613.y $const5 $tmp617 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:54
+#                  100.0 + noise("hash", seed, 2.0) * 100.0,
+	noise		$tmp618 $const6 $const30 $const17 	%line{54} %argrw{"wrrr"}
+	mul		$tmp619 $tmp618 $const5 	%argrw{"wrr"}
+	add		$tmp613.z $const5 $tmp619 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:55
+#                  100.0 + noise("hash", seed, 3.0) * 100.0);
+	noise		$tmp620 $const6 $const30 $const24 	%line{55} %argrw{"wrrr"}
+	mul		$tmp621 $tmp620 $const5 	%argrw{"wrr"}
+	add		$tmp613.w $const5 $tmp621 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const22 1225 	%line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:30
+#     return vector4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+	add		$tmp612.x ___512_p.x $tmp613.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{30} %argrw{"wrr"}
+	add		$tmp612.y ___512_p.y $tmp613.y 	%argrw{"wrr"}
+	add		$tmp612.z ___512_p.z $tmp613.z 	%argrw{"wrr"}
+	add		$tmp612.w ___512_p.w $tmp613.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:116
+#                 fractal_noise(p + random_vector4_offset(5.0), detail));
+	functioncall	$const9 1317 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{116} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:173
+#   float fscale = 1.0;
+	assign		___459_fscale $const10 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{173} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:174
+#   float amp = 1.0;
+	assign		___459_amp $const10 	%line{174} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:175
+#   float sum = 0.0;
+	assign		___459_sum $const3 	%line{175} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:176
+#   float octaves = clamp(details, 0.0, 16.0);
+	functioncall	$const12 1232 	%line{176} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/stdosl.h:163
+# float  clamp (float x, float minval, float maxval) { return max(min(x,maxval),minval); }
+	min		$tmp622 Detail $const11 	%filename{"/opt/lib/osl-1.10.9/shaders/stdosl.h"} %line{163} %argrw{"wrr"}
+	max		___459_octaves $tmp622 $const3 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:177
+#   int n = (int)octaves;
+	assign		___459_n ___459_octaves 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{177} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:178
+#   for (int i = 0; i <= n; i++) {
+	for		$tmp624 1235 1237 1259 1261 	%line{178} %argrw{"r"}
+	assign		___460_i $const13 	%argrw{"wr"}
+	le		$tmp623 ___460_i ___459_n 	%argrw{"wrr"}
+	neq		$tmp624 $tmp623 $const13 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1247 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:100
+#     return vector4(a, a, a, a) * b;
+	assign		$tmp626.x ___459_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{100} %argrw{"wr"}
+	assign		$tmp626.y ___459_fscale 	%argrw{"wr"}
+	assign		$tmp626.z ___459_fscale 	%argrw{"wr"}
+	assign		$tmp626.w ___459_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1247 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:80
+#     return vector4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+	mul		$tmp625.x $tmp626.x $tmp612.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{80} %argrw{"wrr"}
+	mul		$tmp625.y $tmp626.y $tmp612.y 	%argrw{"wrr"}
+	mul		$tmp625.z $tmp626.z $tmp612.z 	%argrw{"wrr"}
+	mul		$tmp625.w $tmp626.w $tmp612.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:179
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 1255 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{179} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:48
+#   float f = noise("noise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp627 $tmp625.x $tmp625.y $tmp625.z 	%line{48} %argrw{"wrrr"}
+	noise		___439_f $const15 $tmp627 $tmp625.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:49
+#   if (isinf(f))
+	isinf		$tmp628 ___439_f 	%line{49} %argrw{"wr"}
+	if		$tmp628 1254 1254 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:50
+#     return 0.5;
+	assign		___461_t $const16 	%line{50} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:51
+#   return f;
+	assign		___461_t ___439_f 	%line{51} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:180
+#     sum += t * amp;
+	mul		$tmp629 ___461_t ___459_amp 	%line{180} %argrw{"wrr"}
+	add		___459_sum ___459_sum $tmp629 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:181
+#     amp *= 0.5;
+	mul		___459_amp ___459_amp $const16 	%line{181} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:182
+#     fscale *= 2.0;
+	mul		___459_fscale ___459_fscale $const17 	%line{182} %argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:178
+#   for (int i = 0; i <= n; i++) {
+	assign		$tmp630 ___460_i 	%line{178} %argrw{"wr"}
+	add		___460_i ___460_i $const18 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:184
+#   float rmd = octaves - floor(octaves);
+	floor		$tmp631 ___459_octaves 	%line{184} %argrw{"wr"}
+	sub		___459_rmd ___459_octaves $tmp631 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:185
+#   if (rmd != 0.0) {
+	neq		$tmp632 ___459_rmd $const3 	%line{185} %argrw{"wrr"}
+	if		$tmp632 1307 1317 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1275 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:100
+#     return vector4(a, a, a, a) * b;
+	assign		$tmp634.x ___459_fscale 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{100} %argrw{"wr"}
+	assign		$tmp634.y ___459_fscale 	%argrw{"wr"}
+	assign		$tmp634.z ___459_fscale 	%argrw{"wr"}
+	assign		$tmp634.w ___459_fscale 	%argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:149
+# 
+	functioncall	$const23 1275 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{149} %argrw{"r"}
+# /opt/lib/osl-1.10.9/shaders/vector4.h:80
+#     return vector4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+	mul		$tmp633.x $tmp634.x $tmp612.x 	%filename{"/opt/lib/osl-1.10.9/shaders/vector4.h"} %line{80} %argrw{"wrr"}
+	mul		$tmp633.y $tmp634.y $tmp612.y 	%argrw{"wrr"}
+	mul		$tmp633.z $tmp634.z $tmp612.z 	%argrw{"wrr"}
+	mul		$tmp633.w $tmp634.w $tmp612.w 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:186
+#     float t = safe_noise(fscale * p);
+	functioncall	$const14 1283 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h"} %line{186} %argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:48
+#   float f = noise("noise", vector3(p.x, p.y, p.z), p.w);
+	point		$tmp635 $tmp633.x $tmp633.y $tmp633.z 	%line{48} %argrw{"wrrr"}
+	noise		___439_f $const15 $tmp635 $tmp633.w 	%argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:49
+#   if (isinf(f))
+	isinf		$tmp636 ___439_f 	%line{49} %argrw{"wr"}
+	if		$tmp636 1282 1282 	%argrw{"r"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:50
+#     return 0.5;
+	assign		___462_t $const16 	%line{50} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:51
+#   return f;
+	assign		___462_t ___439_f 	%line{51} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:187
+#     float sum2 = sum + t * amp;
+	mul		$tmp637 ___462_t ___459_amp 	%line{187} %argrw{"wrr"}
+	add		___462_sum2 ___459_sum $tmp637 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:188
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp638 $const18 ___459_n 	%line{188} %argrw{"wrr"}
+	assign		$tmp639 $tmp638 	%argrw{"wr"}
+	add		$tmp640 ___459_n $const18 	%argrw{"wrr"}
+	shl		$tmp641 $const18 $tmp640 	%argrw{"wrr"}
+	sub		$tmp642 $tmp641 $const18 	%argrw{"wrr"}
+	assign		$tmp643 $tmp642 	%argrw{"wr"}
+	div		$tmp644 $tmp639 $tmp643 	%argrw{"wrr"}
+	mul		___459_sum ___459_sum $tmp644 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:189
+#     sum2 *= ((float)(1 << (n + 1)) / (float)((1 << (n + 2)) - 1));
+	add		$tmp645 ___459_n $const18 	%line{189} %argrw{"wrr"}
+	shl		$tmp646 $const18 $tmp645 	%argrw{"wrr"}
+	assign		$tmp647 $tmp646 	%argrw{"wr"}
+	add		$tmp648 ___459_n $const19 	%argrw{"wrr"}
+	shl		$tmp649 $const18 $tmp648 	%argrw{"wrr"}
+	sub		$tmp650 $tmp649 $const18 	%argrw{"wrr"}
+	assign		$tmp651 $tmp650 	%argrw{"wr"}
+	div		$tmp652 $tmp647 $tmp651 	%argrw{"wrr"}
+	mul		___462_sum2 ___462_sum2 $tmp652 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:190
+#     return (1.0 - rmd) * sum + rmd * sum2;
+	sub		$tmp653 $const10 ___459_rmd 	%line{190} %argrw{"wrr"}
+	mul		$tmp654 $tmp653 ___459_sum 	%argrw{"wrr"}
+	mul		$tmp655 ___459_rmd ___462_sum2 	%argrw{"wrr"}
+	add		$tmp611 $tmp654 $tmp655 	%argrw{"wrr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:193
+#     sum *= ((float)(1 << n) / (float)((1 << (n + 1)) - 1));
+	shl		$tmp656 $const18 ___459_n 	%line{193} %argrw{"wrr"}
+	assign		$tmp657 $tmp656 	%argrw{"wr"}
+	add		$tmp658 ___459_n $const18 	%argrw{"wrr"}
+	shl		$tmp659 $const18 $tmp658 	%argrw{"wrr"}
+	sub		$tmp660 $tmp659 $const18 	%argrw{"wrr"}
+	assign		$tmp661 $tmp660 	%argrw{"wr"}
+	div		$tmp662 $tmp657 $tmp661 	%argrw{"wrr"}
+	mul		___459_sum ___459_sum $tmp662 	%argrw{"wrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise.h:194
+#     return sum;
+	assign		$tmp611 ___459_sum 	%line{194} %argrw{"wr"}
+	return
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:114
+#   Color = color(value,
+	color		Color ___512_value $tmp559 $tmp611 	%filename{"/mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl"} %line{114} %argrw{"wrrr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:117
+#   return value;
+	assign		Fac ___512_value 	%line{117} %argrw{"wr"}
+# /mnt/hd/dev/blender/blender/intern/cycles/kernel/shaders/node_noise_texture.osl:147
+#     error("Unknown dimension!");
+	error		$const31 	%line{147} %argrw{"r"}
+	end
