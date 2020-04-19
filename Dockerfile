@@ -23,7 +23,7 @@ RUN apt install -y libtbb-dev \
 COPY ./lib/*/lib/* /usr/lib/x86_64-linux-gnu/
 
 COPY ./lib1/libpython3.7m.so.1.0 /usr/lib/x86_64-linux-gnu/
-COPY ./lib1/dist-packages/ /usr/local/lib/python3.7/dist-packages/
+COPY ./3.7_dist-packages/ /usr/local/lib/python3.7/dist-packages/
 
 
 # not used of install python 3.7 from ppa
